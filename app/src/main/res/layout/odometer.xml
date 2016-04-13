@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<w_pawel74.a03_xgate.Odometer xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:gravity="center_horizontal|left">
+
+    <include layout="@layout/odo_disc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ODO_Nxxxx"
+        android:visibility="visible" />
+
+    <include layout="@layout/odo_disc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ODO_xNxxx"
+        android:visibility="visible" />
+
+    <include layout="@layout/odo_disc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ODO_xxNxx"
+        android:visibility="visible" />
+
+    <include layout="@layout/odo_disc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ODO_xxxNx"
+        android:visibility="visible" />
+
+    <include layout="@layout/odo_disc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ODO_xxxxN"
+        android:visibility="visible" />
+
+</w_pawel74.a03_xgate.Odometer>

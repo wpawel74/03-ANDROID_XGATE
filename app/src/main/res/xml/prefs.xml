@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:summary="XGate server settings"
+        android:title="XGate settings" >
+        <EditTextPreference
+            android:key="xgate_ip"
+            android:summary="Please enter XGate IP address"
+            android:title="IP"
+            android:defaultValue="10.1.20.1" />
+        <EditTextPreference
+            android:key="xgate_port"
+            android:summary="XGate port"
+            android:title="PORT"
+            android:defaultValue="80" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:summary="Customize your XGate"
+        android:title="MFD Settings" >
+
+        <CheckBoxPreference
+            android:key="LL_TEMPERATURE"
+            android:summary="On/Off"
+            android:title="Temperature sensor" />
+
+        <CheckBoxPreference
+            android:key="LL_BATTERY"
+            android:summary="On/Off"
+            android:title="Battery level online" />
+
+        <CheckBoxPreference
+            android:key="checkBox"
+            android:summary="On/Off"
+            android:title="Use XGate RTC" />
+
+    </PreferenceCategory>
+
+    <!-- dashboard icons configuration -->
+    <PreferenceCategory
+        android:summary="Customize DashBoard"
+        android:title="DashBoard" >
+
+        <CheckBoxPreference
+            android:key="ico_battery_visible"
+            android:summary="On/Off"
+            android:title="Use Battery" />
+
+        <CheckBoxPreference
+            android:key="ico_engine_visible"
+            android:summary="On/Off"
+            android:title="Use Engine" />
+
+        <CheckBoxPreference
+            android:key="ico_temperature_visible"
+            android:summary="On/Off"
+            android:title="Use Temperature Warning" />
+
+        <CheckBoxPreference
+            android:key="ico_fuel_visible"
+            android:summary="On/Off"
+            android:title="Use Low Fuel Warning" />
+
+        <CheckBoxPreference
+            android:key="ico_high_beam_visible"
+            android:summary="On/Off"
+            android:title="Use High Beam" />
+
+        <CheckBoxPreference
+            android:key="ico_turns_visible"
+            android:summary="On/Off"
+            android:title="Use Turns" />
+
+        <CheckBoxPreference
+            android:key="ico_driving_beam_visible"
+            android:summary="On/Off"
+            android:title="Use Driving Beam" />
+
+        <CheckBoxPreference
+            android:key="ico_alert_visible"
+            android:summary="On/Off"
+            android:title="Use XGate Alert" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

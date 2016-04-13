@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#222222">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/LL_ICONS_LEFT"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true">
+
+        <ToggleButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/IV_BATTERY"
+            android:textOn=""
+            android:textOff=""
+            android:background="@drawable/ico_battery" />
+
+        <ToggleButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/IV_ENGINE"
+            android:textOn=""
+            android:textOff=""
+            android:background="@drawable/ico_engine" />
+
+        <ToggleButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/IV_TEMP"
+            android:textOn=""
+            android:textOff=""
+            android:background="@drawable/ico_temp" />
+
+        <ToggleButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/IV_FUEL"
+            android:textOn=""
+            android:textOff=""
+            android:background="@drawable/ico_fuel" />
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/FL_COIN"
+        android:layout_centerInParent="true">
+
+        <ViewFlipper
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/V_FLIPPER"
+            android:layout_gravity="center_vertical">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/clock"
+                android:background="@drawable/coin_animation_000">
+
+            </FrameLayout>
+
+            <include layout="@layout/mfd"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/MFD1" />
+
+            <w_pawel74.a03_xgate.Speedo
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/SPEEDO"
+                android:background="@drawable/coin_animation_000">
+
+                <ImageView
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:id="@+id/IV_SPEED_DIAL"
+                    android:src="@drawable/speedo_dial_kmh"
+                    android:layout_gravity="center"
+                    android:visibility="visible" />
+
+                <include layout="@layout/odometer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="120px"
+                    android:layout_gravity="bottom|center_horizontal"
+                    android:id="@+id/ODOMETER" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/IV_SPEED_NEEDLE_SHADOW"
+                    android:src="@drawable/speedo_needle_shadow"
+                    android:layout_marginTop="34px"
+                    android:layout_gravity="top|center_horizontal" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/IV_SPEED_NEEDLE"
+                    android:src="@drawable/speedo_needle"
+                    android:layout_marginTop="34px"
+                    android:layout_gravity="top|center_horizontal"
+                    android:background="@drawable/speedo_needle" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/IV_SPEED_SPINDLE"
+                    android:src="@drawable/speedo_spindle"
+                    android:layout_gravity="center"
+                    android:visibility="visible" />
+
+            </w_pawel74.a03_xgate.Speedo>
+
+            <include layout="@layout/mfd"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/MFD2" />
+
+        </ViewFlipper>
+    </FrameLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/LL_ICONS_RIGHT"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true" >
+
+        <ToggleButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/IV_HIGH_BEAM"
+            android:background="@drawable/ico_high_beam" />
+
+        <ToggleButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/IV_TURNS"
+            android:textOn=""
+            android:textOff=""
+            android:background="@drawable/ico_turns" />
+
+        <ToggleButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/IV_DRIVING_BEAM"
+            android:textOn=""
+            android:textOff=""
+            android:background="@drawable/ico_driving_beam" />
+
+        <ToggleButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/IV_ALERT"
+            android:textOn=""
+            android:textOff=""
+            android:background="@drawable/ico_alert" />
+
+    </LinearLayout>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Button"
+        android:id="@+id/button"
+        android:layout_below="@+id/LL_ICONS_RIGHT"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+</RelativeLayout>

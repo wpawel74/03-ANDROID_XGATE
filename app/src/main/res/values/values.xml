@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="coin_animation_duration">20</integer>
+    <integer name="odo_dial_animation_duration">500</integer>
+</resources>

@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/coin_animation_090" >
+
+    <ViewFlipper
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/VF_MFD"
+        android:layout_margin="60dp">
+
+        <!-- *************************************************************
+                             DAILY ODOMETER LAYOUT
+             ************************************************************* -->
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:id="@+id/LL_DAILY_ODO">
+
+            <TextView
+                style="@style/MfdLabelFont"
+                android:text="Daily Odometer"
+                android:id="@+id/TV_LABEL_DAILY_ODOMETER" />
+
+            <w_pawel74.a03_xgate.Odometer
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:gravity="center"
+                android:id="@+id/LV_DAILY_ODOMETER" >
+
+                <include layout="@layout/odo_disc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/ODO_xNxxx"
+                    android:visibility="visible" />
+
+                <include layout="@layout/odo_disc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/ODO_xxNxx"
+                    android:visibility="visible" />
+
+                <include layout="@layout/odo_disc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/ODO_xxxNx"
+                    android:visibility="visible" />
+
+                <!-- It's not possible to attributes other than layout params, visibility or ID on an include tag.
+                     This includes custom attributes. The inflater only applies the ID and visibility attributes to
+                     the included layout. That we need to include all layout inside.
+                     It's not clear but we not have a choice -->
+                <w_pawel74.a03_xgate.OdometerDisc
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:a03_xgate="http://schemas.android.com/apk/res-auto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/ODO_xxxxN"
+                    android:visibility="visible"
+                    a03_xgate:invertColors="true" >
+
+                    <ImageSwitcher
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:id="@+id/IS_DISC_SWITCHER"
+                        android:layout_gravity="fill_horizontal" >
+                    </ImageSwitcher>
+
+                </w_pawel74.a03_xgate.OdometerDisc>
+
+                <!-- do not forgot that layout_gravity attribute is set default on used style -->
+                <TextView
+                    style="@style/MfdLabelFont"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="km"
+                    android:id="@+id/TV_ODOMETER_UNIT" />
+
+            </w_pawel74.a03_xgate.Odometer>
+
+        </LinearLayout>
+
+        <!-- *************************************************************
+                                 BATTERY LAYOUT
+             ************************************************************* -->
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/LL_BATTERY">
+
+            <TextView
+                style="@style/MfdLabelFont"
+                android:text="Battery Voltage"
+                android:id="@+id/TV_LABEL_BATTERY_VOLTAGE" />
+
+            <w_pawel74.a03_xgate.VoltGauge
+                android:orientation="vertical"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:id="@+id/VOLT_MULTIMETER">
+
+                <ImageView
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:src="@drawable/volt_dial"/>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="30px"
+                    android:layout_gravity="center_horizontal|top"
+                    android:id="@+id/IV_VOLT_NEDLE"
+                    android:src="@drawable/volt_nedle"/>
+
+            </w_pawel74.a03_xgate.VoltGauge>
+
+        </LinearLayout>
+
+        <!-- *************************************************************
+                           TEMPERATURE LAYOUT
+             ************************************************************* -->
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/LL_TEMPERATURE">
+
+            <TextView
+                style="@style/MfdLabelFont"
+                android:text="Temperature [°C]"
+                android:id="@+id/TV_LABEL_TEMPERATURE" />
+
+            <TextView
+                style="@style/MfdTemprtatureFont"
+                android:text="23.3"
+                android:id="@+id/TV_TEMPERATURE" />
+        </LinearLayout>
+
+        <!-- *************************************************************
+                                TIME TRAVEL LAYOUT
+             ************************************************************* -->
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/LL_TIME_TRAVEL">
+
+            <TextView
+                style="@style/MfdLabelFont"
+                android:text="Time Travel"
+                android:id="@+id/TV_LABEL_TIME_TRAVEL" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:id="@+id/LL_TIME_TRAVEL_CLOCK">
+
+                <TextView
+                        style="@style/TimeTravelFont_HHMM"
+                        android:text="10:34"
+                        android:id="@+id/TV_TIME_TRAVEL_HHMM" />
+
+                <TextView
+                        style="@style/TimeTravelFont_SS"
+                        android:text="22"
+                        android:paddingLeft="7px"
+                        android:id="@+id/TV_TIME_TRAVEL_SS" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- *************************************************************
+                                  SETTINGS LAYOUT
+             ************************************************************* -->
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/LL_SETTINGS">
+
+            <TextView
+                style="@style/MfdLabelFont"
+                android:text="Settings"
+                android:id="@+id/TV_LABEL_SETTINGS" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:id="@+id/LL_SETTINGS_LAYER">
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/B_SETTINGS"
+                    android:background="@drawable/ico_settings" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ViewFlipper>
+
+</FrameLayout>
