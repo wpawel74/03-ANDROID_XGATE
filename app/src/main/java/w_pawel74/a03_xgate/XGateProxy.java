@@ -29,7 +29,7 @@ public class XGateProxy extends AsyncTask<Void, String, Void> {
         m_context = context;
     }
 
-    private void connect() {
+    private void tryConnectToXGate() {
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences( m_context );
 
         Log.d(TAG, "---> CONNECTING ...");
@@ -48,12 +48,12 @@ public class XGateProxy extends AsyncTask<Void, String, Void> {
 
         } catch (IOException e) {
             e.printStackTrace();
-            close();
+            closeXGateConnection();
         }
         Log.d(TAG, "---> CONNECTING ... END");
     }
 
-    private void close(){
+    private void closeXGateConnection(){
         Log.d(TAG, "---> CLOSE CONNECTION ...");
         try {
             if( m_xGateIn != null )
@@ -87,7 +87,7 @@ public class XGateProxy extends AsyncTask<Void, String, Void> {
 
             Log.d(TAG, "---> NEXT LOOP");
             if( m_socket != null && m_socket.isConnected() == false )
-                close();
+                closeXGateConnection();
             if( m_socket == null || m_xGateIn == null || m_xGateOut == null ) {
                 try {
                     Thread.sleep(10000);
@@ -102,14 +102,18 @@ public class XGateProxy extends AsyncTask<Void, String, Void> {
                     }
                 });
 
-                connect();
+                tryConnectToXGate();
                 continue;
             }
             String msg = null;
             try {
                 if( m_sentInitData == false ) {
-                    Log.d(TAG, "---> WRITE 1 BYTE TO OUTPUT STREAM");
-                    m_xGateOut.write(30);
+                    String conf = new String( "CONNECTED\n" );
+                    //
+                    // TODO: --- Do something !! ---
+                    //
+
+                    m_xGateOut.writeBytes(conf);
                     m_sentInitData = true;
                 }
                 Log.d(TAG, "---> TRY TO READ DATA...");
@@ -124,10 +128,10 @@ public class XGateProxy extends AsyncTask<Void, String, Void> {
                         ((DashBoardActivity)m_context).showPopup((Activity) m_context, R.string.NETWORK_ISSUE, R.string.NOT_CONNECTED_TO_XGATE_NETWORK);
                     }
                 });
-                close();
+                closeXGateConnection();
             }
         }
-        close();
+        closeXGateConnection();
         Log.d(TAG, "---> END OF ASYNC TASK");
         return null;
     }
