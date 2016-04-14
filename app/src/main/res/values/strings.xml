@@ -1,8 +1,5 @@
 <resources>
     <string name="app_name">A03_XGATE</string>
-    <string name="NETWORK_ISSUE">Network Issue</string>
-    <string name="NOT_CONNECTED_TO_XGATE_NETWORK">Device is not connected to xGate network</string>
-    <string name="DISCONNECTED_FROM_XGATE_NETWORK">Disconnected from xGate network</string>
     <string name="TV_LABEL_TIME_TRAVEL">Time from start</string>
     <string name="TV_LABEL_SETTINGS">Settings</string>
     <string name="TV_LABEL_TEMPERATURE">Temperature [°C]</string>
@@ -27,4 +24,12 @@
     <string name="PREF_ALERT_VISIBLE">Alert Icon</string>
     <string name="PREF_ONOFF">On/Off</string>
     <string name="PREF_BATTERY_MONITOR">Battery Monitor</string>
+    <string name="POPUP_INFO_IGNITION_ON">Ignition is ON</string>
+    <string name="POPUP_INFO_IGNITION_OFF">Ignition is OFF</string>
+    <string name="POPUP_INFO">System Information</string>
+    <string name="POPUP_NETWORK_ISSUE">Network Issue</string>
+    <string name="POPUP_NETWORK_INFO">Network Information</string>
+    <string name="POPUP_XGATE_NOT_FOUND">Device is not connected to xGate network</string>
+    <string name="POPUP_XGATE_DISCONNECTED">Disconnected from xGate network</string>
+    <string name="POPUP_XGATE_CONNECTED">Connected with xGate</string>
 </resources>

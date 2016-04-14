@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">A03_XGATE</string>
-    <string name="DISCONNECTED_FROM_XGATE_NETWORK">Rozłączenie z siecią xGate</string>
-    <string name="NETWORK_ISSUE">Problem z połączeniem</string>
-    <string name="NOT_CONNECTED_TO_XGATE_NETWORK">Urządzenie nie jest podłaczone do sieci xGate</string>
     <string name="TV_LABEL_SETTINGS">Ustawienia</string>
     <string name="TV_LABEL_TEMPERATURE">Temperatura</string>
     <string name="TV_LABEL_TIME_TRAVEL">Czas jazdy</string>
@@ -28,4 +25,12 @@
     <string name="PREF_XGATE_PORT">Użyty port</string>
     <string name="PREF_XGATE_SETTINGS">Ustawienia xGate</string>
     <string name="PREF_XGATE_SETTINGS_SUMMARY">Podstawowe ustawienia dla xGate</string>
+    <string name="POPUP_INFO_IGNITION_OFF">Stacyjka wyłączona</string>
+    <string name="POPUP_INFO_IGNITION_ON">Stacyjka włączona</string>
+    <string name="POPUP_INFO">Informacja z systemu</string>
+    <string name="POPUP_NETWORK_ISSUE">Problem z połączeniem</string>
+    <string name="POPUP_NETWORK_INFO">Informacja sieciowa</string>
+    <string name="POPUP_XGATE_NOT_FOUND">Urządzenie nie jest podłaczone do sieci xGate</string>
+    <string name="POPUP_XGATE_CONNECTED">Połączono z xGate</string>
+    <string name="POPUP_XGATE_DISCONNECTED">Rozłączenie z siecią xGate</string>
 </resources>

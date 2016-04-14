@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.os.Handler;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -39,10 +40,16 @@ public class XGateProxy extends AsyncTask<Void, String, Void> {
             m_xGateIn = new DataInputStream(m_socket.getInputStream());
             m_xGateOut = new DataOutputStream(m_socket.getOutputStream());
 
-            ((Activity)m_context).runOnUiThread( new Runnable() {
+            ((Activity) m_context).runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    ((DashBoardActivity)m_context).hidePopup();
+                    ((DashBoardActivity) m_context).showPopup((Activity) m_context, R.string.POPUP_NETWORK_INFO, R.string.POPUP_XGATE_CONNECTED);
+                    new Handler().postDelayed(new Runnable() {
+
+                        public void run() {
+                            ((DashBoardActivity) m_context).hidePopup();
+                        }
+                    }, 3000);
                 }
             });
 
@@ -78,13 +85,6 @@ public class XGateProxy extends AsyncTask<Void, String, Void> {
 
         while( isCancelled() == false ){
 
-            ((Activity)m_context).runOnUiThread( new Runnable() {
-                @Override
-                public void run() {
-                    ((DashBoardActivity)m_context).showPopup((Activity) m_context, R.string.NETWORK_ISSUE, R.string.NOT_CONNECTED_TO_XGATE_NETWORK);
-                }
-            });
-
             Log.d(TAG, "---> NEXT LOOP");
             if( m_socket != null && m_socket.isConnected() == false )
                 closeXGateConnection();
@@ -94,13 +94,6 @@ public class XGateProxy extends AsyncTask<Void, String, Void> {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-
-                ((Activity)m_context).runOnUiThread( new Runnable() {
-                    @Override
-                    public void run() {
-                        ((DashBoardActivity)m_context).hidePopup();
-                    }
-                });
 
                 tryConnectToXGate();
                 continue;
@@ -125,7 +118,7 @@ public class XGateProxy extends AsyncTask<Void, String, Void> {
                 ((Activity)m_context).runOnUiThread( new Runnable() {
                     @Override
                     public void run() {
-                        ((DashBoardActivity)m_context).showPopup((Activity) m_context, R.string.NETWORK_ISSUE, R.string.NOT_CONNECTED_TO_XGATE_NETWORK);
+                        ((DashBoardActivity)m_context).showPopup((Activity) m_context, R.string.POPUP_NETWORK_ISSUE, R.string.POPUP_XGATE_NOT_FOUND);
                     }
                 });
                 closeXGateConnection();

@@ -5,12 +5,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.support.v4.content.res.ResourcesCompat;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Gravity;
@@ -25,7 +24,6 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 import android.widget.ViewFlipper;
-import android.graphics.drawable.AnimationDrawable;
 
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
@@ -89,7 +87,7 @@ public class DashBoardActivity extends Activity implements GestureDetector.OnGes
                 setTemperature((float) 34.5);
                 setIcon(Icon.ICON_BATTERY, true);
                 //if(getContext() instanceof Activity){ //typecast}
-                    showPopup( m_activity, R.string.NETWORK_ISSUE, R.string.NOT_CONNECTED_TO_XGATE_NETWORK);
+                    showPopup( m_activity, R.string.POPUP_NETWORK_ISSUE, R.string.POPUP_XGATE_NOT_FOUND);
             }
         });
 
@@ -157,6 +155,8 @@ public class DashBoardActivity extends Activity implements GestureDetector.OnGes
     protected void onResume(){
         super.onResume();
         dashBoardViewConfiguration();
+        if( m_xGateProxy.getStatus() == AsyncTask.Status.FINISHED )
+            m_xGateProxy.execute();
     }
 
     @Override
@@ -415,8 +415,13 @@ public class DashBoardActivity extends Activity implements GestureDetector.OnGes
             setIcon(Icon.ICON_TEMPERATURE, (ico & FLAG_INPUT_GPIO_TEMP_WARNING) == FLAG_INPUT_GPIO_TEMP_WARNING ? true: false );
             setIcon(Icon.ICON_BATTERY, (ico & FLAG_INPUT_GPIO_BATTERY_WARNING) == FLAG_INPUT_GPIO_BATTERY_WARNING ? true: false );
         } else if( words[0].startsWith("IGNITION") ) {
+            if( m_ignition != (Integer.valueOf(words[1]) == 1 ? true: false) ) {
+                showPopup(m_activity, R.string.POPUP_INFO, !m_ignition ?
+                                            R.string.POPUP_INFO_IGNITION_ON :
+                                            R.string.POPUP_INFO_IGNITION_OFF);
+            }
             m_ignition = Integer.valueOf(words[1]) == 1 ? true: false;
-            setIcon(Icon.ICON_ENGINE, !m_ignition ? true: false );
+            setIcon(Icon.ICON_ENGINE, !m_ignition ? true : false);
         }
     }
 
