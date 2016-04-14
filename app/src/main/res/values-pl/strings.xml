@@ -9,4 +9,23 @@
     <string name="TV_LABEL_TIME_TRAVEL">Czas jazdy</string>
     <string name="TV_LABEL_BATTERY_VOLTAGE">Napiecie ładowania</string>
     <string name="TV_LABEL_DAILY_ODOMETER">Dzienny licznik</string>
+    <string name="PREF_ALERT_VISIBLE">Ikona ostrzeżeń</string>
+    <string name="PREF_BATTERY_MONITOR">Monitor stanu akumulatora</string>
+    <string name="PREF_BATTERY_WARNING_VISIBLE">Ostrzeżenie o akumulatorze</string>
+    <string name="PREF_DASHBOARD_SETTINGS">Ustawienia panelu</string>
+    <string name="PREF_DASHBOARD_SETTINGS_SUMMARY">Ustawienia urzytkownika</string>
+    <string name="PREF_DRIVING_BEAM_VISIBLE">Kontrolka świateł mijania</string>
+    <string name="PREF_FUEL_WARNING_VISIBLE">Ostrzeżenie o niskim poziomie paliwa</string>
+    <string name="PREF_HIGH_BEAM_VISIBLE">Kontrolka świateł drogowych</string>
+    <string name="PREF_ENGINE_WARNING_VISIBLE">Problem z śilnikiem</string>
+    <string name="PREF_MFD_SETTINGS">Komputer pokładowy</string>
+    <string name="PREF_MFD_SETTINGS_SUMMARY">Profil xGate</string>
+    <string name="PREF_ONOFF">Wł/Wył</string>
+    <string name="PREF_TEMPERATURE">Czujnik temperatury</string>
+    <string name="PREF_TEMPERATURE_WARNING_VISIBLE">Kontrolka temperatury</string>
+    <string name="PREF_TURNS_VISIBLE">Kontrolka kierunkowskazów</string>
+    <string name="PREF_XGATE_IP">Adres IP dla xGate</string>
+    <string name="PREF_XGATE_PORT">Użyty port</string>
+    <string name="PREF_XGATE_SETTINGS">Ustawienia xGate</string>
+    <string name="PREF_XGATE_SETTINGS_SUMMARY">Podstawowe ustawienia dla xGate</string>
 </resources>

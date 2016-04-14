@@ -8,4 +8,23 @@
     <string name="TV_LABEL_TEMPERATURE">Temperature [°C]</string>
     <string name="TV_LABEL_BATTERY_VOLTAGE">Battery Voltage</string>
     <string name="TV_LABEL_DAILY_ODOMETER">Daily odometer</string>
+    <string name="PREF_XGATE_IP">Please enter xGate IP address</string>
+    <string name="PREF_XGATE_PORT">xGate port</string>
+    <string name="PREF_MFD_SETTINGS">Multi Function Display</string>
+    <string name="PREF_TEMPERATURE">Temperature sensor</string>
+    <string name="PREF_XGATE_SETTINGS">XGate Settings</string>
+    <string name="PREF_XGATE_SETTINGS_SUMMARY">Basic XGate settings</string>
+    <string name="PREF_MFD_SETTINGS_SUMMARY">Customize your XGate</string>
+    <string name="PREF_DASHBOARD_SETTINGS">DashBoard settings</string>
+    <string name="PREF_DASHBOARD_SETTINGS_SUMMARY">Customize DashBoard</string>
+    <string name="PREF_BATTERY_WARNING_VISIBLE">Battery Warning</string>
+    <string name="PREF_ENGINE_WARNING_VISIBLE">Engine Warning</string>
+    <string name="PREF_TEMPERATURE_WARNING_VISIBLE">Temperature Warning Icon</string>
+    <string name="PREF_FUEL_WARNING_VISIBLE">Fuel Warning</string>
+    <string name="PREF_HIGH_BEAM_VISIBLE">High Beam Icon</string>
+    <string name="PREF_DRIVING_BEAM_VISIBLE">Driving Beam Icon</string>
+    <string name="PREF_TURNS_VISIBLE">Turns Icon</string>
+    <string name="PREF_ALERT_VISIBLE">Alert Icon</string>
+    <string name="PREF_ONOFF">On/Off</string>
+    <string name="PREF_BATTERY_MONITOR">Battery Monitor</string>
 </resources>

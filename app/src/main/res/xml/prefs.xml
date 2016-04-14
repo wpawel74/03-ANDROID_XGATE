@@ -1,85 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory
-        android:summary="XGate server settings"
-        android:title="XGate settings" >
+        android:summary="@string/PREF_XGATE_SETTINGS_SUMMARY"
+        android:title="@string/PREF_XGATE_SETTINGS" >
         <EditTextPreference
             android:key="xgate_ip"
-            android:summary="Please enter XGate IP address"
+            android:summary="@string/PREF_XGATE_IP"
             android:title="IP"
             android:defaultValue="10.1.20.1" />
         <EditTextPreference
             android:key="xgate_port"
-            android:summary="XGate port"
+            android:summary="@string/PREF_XGATE_PORT"
             android:title="PORT"
             android:defaultValue="80" />
     </PreferenceCategory>
 
+    <!-- Multi Function Display configuration -->
     <PreferenceCategory
-        android:summary="Customize your XGate"
-        android:title="MFD Settings" >
+        android:summary="@string/PREF_MFD_SETTINGS_SUMMARY"
+        android:title="@string/PREF_MFD_SETTINGS" >
 
         <CheckBoxPreference
             android:key="LL_TEMPERATURE"
-            android:summary="On/Off"
-            android:title="Temperature sensor" />
+            android:summary="@string/PREF_ONOFF"
+            android:title="@string/PREF_TEMPERATURE" />
 
         <CheckBoxPreference
             android:key="LL_BATTERY"
-            android:summary="On/Off"
-            android:title="Battery level online" />
-
-        <CheckBoxPreference
-            android:key="checkBox"
-            android:summary="On/Off"
-            android:title="Use XGate RTC" />
+            android:summary="@string/PREF_ONOFF"
+            android:title="@string/PREF_BATTERY_MONITOR" />
 
     </PreferenceCategory>
 
     <!-- dashboard icons configuration -->
     <PreferenceCategory
-        android:summary="Customize DashBoard"
-        android:title="DashBoard" >
+        android:summary="@string/PREF_DASHBOARD_SETTINGS_SUMMARY"
+        android:title="@string/PREF_DASHBOARD_SETTINGS" >
 
         <CheckBoxPreference
             android:key="ico_battery_visible"
-            android:summary="On/Off"
-            android:title="Use Battery" />
+            android:summary="@string/PREF_ONOFF"
+            android:title="@string/PREF_BATTERY_WARNING_VISIBLE" />
 
         <CheckBoxPreference
             android:key="ico_engine_visible"
-            android:summary="On/Off"
-            android:title="Use Engine" />
+            android:summary="@string/PREF_ONOFF"
+            android:title="@string/PREF_ENGINE_WARNING_VISIBLE" />
 
         <CheckBoxPreference
             android:key="ico_temperature_visible"
-            android:summary="On/Off"
-            android:title="Use Temperature Warning" />
+            android:summary="@string/PREF_ONOFF"
+            android:title="@string/PREF_TEMPERATURE_WARNING_VISIBLE" />
 
         <CheckBoxPreference
             android:key="ico_fuel_visible"
-            android:summary="On/Off"
-            android:title="Use Low Fuel Warning" />
+            android:summary="@string/PREF_ONOFF"
+            android:title="@string/PREF_FUEL_WARNING_VISIBLE" />
 
         <CheckBoxPreference
             android:key="ico_high_beam_visible"
-            android:summary="On/Off"
-            android:title="Use High Beam" />
+            android:summary="@string/PREF_ONOFF"
+            android:title="@string/PREF_HIGH_BEAM_VISIBLE" />
 
         <CheckBoxPreference
             android:key="ico_turns_visible"
-            android:summary="On/Off"
-            android:title="Use Turns" />
+            android:summary="@string/PREF_ONOFF"
+            android:title="@string/PREF_TURNS_VISIBLE" />
 
         <CheckBoxPreference
             android:key="ico_driving_beam_visible"
-            android:summary="On/Off"
-            android:title="Use Driving Beam" />
+            android:summary="@string/PREF_ONOFF"
+            android:title="@string/PREF_DRIVING_BEAM_VISIBLE" />
 
         <CheckBoxPreference
             android:key="ico_alert_visible"
-            android:summary="On/Off"
-            android:title="Use XGate Alert" />
+            android:summary="@string/PREF_ONOFF"
+            android:title="@string/PREF_ALERT_VISIBLE" />
 
     </PreferenceCategory>
 
