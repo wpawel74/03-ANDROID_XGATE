@@ -43,9 +43,8 @@ public class VoltGauge extends FrameLayout {
         return (current_voltage - 13000) * (float)(MAX_ANGLE / 4000.f);
     }
 
-    public void resetVoltAnim()
-    {
-        startNeedleAnimation(transformVoltageToAngle(currentVoltage), 11000);
+    public void resetVoltAnim() {
+        startNeedleAnimation(transformVoltageToAngle(0), 0);
     }
 
     /**

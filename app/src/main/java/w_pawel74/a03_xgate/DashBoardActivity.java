@@ -99,7 +99,8 @@ public class DashBoardActivity extends Activity implements GestureDetector.OnGes
 
         ((Speedo) findViewById(R.id.SPEEDO)).resetSpeedAnim();
         ((Tacho) findViewById(R.id.TACHOMETER)).resetRpmAnim();
-        setVoltage(1300);
+        ((VoltGauge)m_LL_BATTERY_MFD1.findViewById(R.id.VOLT_MULTIMETER)).resetVoltAnim();
+        ((VoltGauge)m_LL_BATTERY_MFD2.findViewById(R.id.VOLT_MULTIMETER)).resetVoltAnim();
 
         m_xGateProxy = new XGateProxy( this );
         m_xGateProxy.setXGateOnDataListener( this );
@@ -409,7 +410,7 @@ public class DashBoardActivity extends Activity implements GestureDetector.OnGes
             setIcon(Icon.ICON_DRIVING_BEAM, (ico & FLAG_INPUT_GPIO_LOW_BEAM) == FLAG_INPUT_GPIO_LOW_BEAM ? true: false );
             setIcon(Icon.ICON_TURNS, (ico & FLAG_INPUT_GPIO_TURN_LIGHT) == FLAG_INPUT_GPIO_TURN_LIGHT ? true: false );
             setIcon(Icon.ICON_ALERT, (ico & FLAG_INPUT_GPIO_ALERT) == FLAG_INPUT_GPIO_ALERT ? true: false );
-            setIcon(Icon.ICON_ENGINE, (ico & FLAG_INPUT_GPIO_ENGINE_WARNING) == FLAG_INPUT_GPIO_ENGINE_WARNING ? true: false );
+            setIcon(Icon.ICON_ENGINE, (ico & FLAG_INPUT_GPIO_ENGINE_WARNING) == FLAG_INPUT_GPIO_ENGINE_WARNING ? true : false);
             setIcon(Icon.ICON_FUEL, (ico & FLAG_INPUT_GPIO_FUEL_WARNING) == FLAG_INPUT_GPIO_FUEL_WARNING ? true: false );
             setIcon(Icon.ICON_TEMPERATURE, (ico & FLAG_INPUT_GPIO_TEMP_WARNING) == FLAG_INPUT_GPIO_TEMP_WARNING ? true: false );
             setIcon(Icon.ICON_BATTERY, (ico & FLAG_INPUT_GPIO_BATTERY_WARNING) == FLAG_INPUT_GPIO_BATTERY_WARNING ? true: false );
