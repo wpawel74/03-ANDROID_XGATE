@@ -419,6 +419,12 @@ public class DashBoardActivity extends Activity implements GestureDetector.OnGes
                 showPopup(m_activity, R.string.POPUP_INFO, !m_ignition ?
                                             R.string.POPUP_INFO_IGNITION_ON :
                                             R.string.POPUP_INFO_IGNITION_OFF);
+                new Handler().postDelayed(new Runnable() {
+
+                    public void run() {
+                        ((DashBoardActivity) m_activity).hidePopup();
+                    }
+                }, getResources().getInteger(R.integer.popup_hide_timeout));
             }
             m_ignition = Integer.valueOf(words[1]) == 1 ? true: false;
             setIcon(Icon.ICON_ENGINE, !m_ignition ? true : false);

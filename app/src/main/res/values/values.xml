@@ -2,4 +2,5 @@
 <resources>
     <integer name="coin_animation_duration">20</integer>
     <integer name="odo_dial_animation_duration">500</integer>
+    <integer name="popup_hide_timeout">3000</integer>
 </resources>

@@ -49,7 +49,7 @@ public class XGateProxy extends AsyncTask<Void, String, Void> {
                         public void run() {
                             ((DashBoardActivity) m_context).hidePopup();
                         }
-                    }, 3000);
+                    }, m_context.getResources().getInteger(R.integer.popup_hide_timeout));
                 }
             });
 
@@ -69,7 +69,7 @@ public class XGateProxy extends AsyncTask<Void, String, Void> {
             if( m_xGateOut != null )
                 m_xGateOut.close();
             m_xGateOut = null;
-            if( m_socket != null && m_socket.isClosed() == false )
+            if( m_socket != null )
                 m_socket.close();
             m_socket = null;
         } catch (IOException e) {
@@ -111,6 +111,8 @@ public class XGateProxy extends AsyncTask<Void, String, Void> {
                 }
                 Log.d(TAG, "---> TRY TO READ DATA...");
                 msg = m_xGateIn.readLine();
+                if( msg == null )
+                    closeXGateConnection();
                 Log.d(TAG, "---> READ MESSAGE: " + msg);
                 publishProgress( msg );
             } catch (IOException e) {
