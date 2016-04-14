@@ -11,41 +11,46 @@ import android.widget.ImageView;
 /**
  * Created by wisniewskip on 2016-04-06.
  */
-public class VoltGauge extends FrameLayout {
+public class Tacho extends FrameLayout {
 
-    public VoltGauge(Context context) {
+    public Tacho(Context context) {
         super(context);
     }
 
-    public VoltGauge(Context context, AttributeSet attrs) {
+    public Tacho(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public VoltGauge(Context context, AttributeSet attrs, int defStyleAttr) {
+    public Tacho(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
-    public VoltGauge(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public Tacho(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 
     /**
-     * Transformation speed in km/h on angle of the needle
-     * @param current_voltage
+     * Transformation RPM on angle of the needle
+     *
+     * @param current_rpm - speed in km/h
      * @return angle for rotation the needle
      */
-    public float transformVoltageToAngle(float current_voltage){
-        if (current_voltage < 11000)
-            current_voltage = 11000;
-        if (current_voltage > MAX_VOLTAGE)
-            current_voltage = MAX_VOLTAGE;
+    public float transformRpmToAngle(int current_rpm) {
+        if (current_rpm < 0)
+            current_rpm = 0;
+        if (current_rpm > MAX_RPM)
+            current_rpm = MAX_RPM;
 
-        return (current_voltage - 13000) * (float)(MAX_ANGLE / 4000.f);
+        if (current_rpm < 5000)
+            return -MAX_ANGLE + (current_rpm * (float) (88.0f / 5000.0f));
+        if (current_rpm >= 5000 && current_rpm < 7000)
+            return -MAX_ANGLE + 88.f + ((current_rpm - 5000) * (float) ((MAX_ANGLE - 88.0f) / 2000.f));
+
+        return (current_rpm - 7000) * (float) (MAX_ANGLE / 6000.f);
     }
 
-    public void resetVoltAnim()
-    {
-        startNeedleAnimation(transformVoltageToAngle(currentVoltage), 11000);
+    public void resetRpmAnim() {
+        startNeedleAnimation(transformRpmToAngle(currentRpm), 0);
     }
 
     /**
@@ -71,24 +76,25 @@ public class VoltGauge extends FrameLayout {
             degrees = from + ((to - from) * interpolatedTime);
         }
 
-        public float getLastDegree()
-        {
+        public float getLastDegree() {
             return degrees;
         }
-    };
+    }
 
-    private final float         MAX_ANGLE       = 104;
-    private final int           MAX_VOLTAGE     = 15000;
-    private int                 currentVoltage  = 0;
-    private float               currentAngle    = 0;
-    ImageView                   needle          = null;
-    LinearInterpolator          interpolator    = new LinearInterpolator();
-    RotAnim                     needleAnim      = null;
+    private final float MAX_ANGLE = 140;
+    private final int MAX_RPM = 13000;
+    private int currentRpm = 0;
+    private float currentAngle = 0;
+    ImageView needle = null;
+    ImageView needleShadow = null;
+    LinearInterpolator interpolator = new LinearInterpolator();
+    RotAnim needleAnim = null;
 
     /**
      * animation for rotation the needle
+     *
      * @param toDegree - rotation needle
-     * @param milisec - time animation
+     * @param milisec  - time animation
      */
     public void startNeedleAnimation(float toDegree, long milisec) {
         final float lastDegree;
@@ -97,25 +103,34 @@ public class VoltGauge extends FrameLayout {
         else
             lastDegree = (this.needleAnim != null ? this.needleAnim.getLastDegree() : currentAngle);
 
+        RotateAnimation shadowAnim = new RotateAnimation(lastDegree, toDegree,
+                RotateAnimation.RELATIVE_TO_SELF, (float) 0.5,
+                RotateAnimation.RELATIVE_TO_SELF, (float) 0.70);
+
         RotAnim needleAnim = new RotAnim(lastDegree, toDegree, RotateAnimation.RELATIVE_TO_SELF,
-                (float)0.5, RotateAnimation.RELATIVE_TO_SELF, (float)1.0 );
+                (float) 0.5, RotateAnimation.RELATIVE_TO_SELF, (float) 0.74);
 
         this.needleAnim = needleAnim;
 
+        shadowAnim.setInterpolator(interpolator);
         needleAnim.setInterpolator(interpolator);
 
+        shadowAnim.setDuration(milisec);
         needleAnim.setDuration(milisec);
 
+        shadowAnim.setFillAfter(true);
         needleAnim.setFillAfter(true);
 
-        needle = (ImageView)findViewById(R.id.IV_VOLT_NEDLE);
+        needle = (ImageView) findViewById(R.id.IV_TACHOMETER_NEEDLE);
+        needleShadow = (ImageView) findViewById(R.id.IV_TACHOMETER_NEEDLE_SHADOW);
 
+        needleShadow.startAnimation(shadowAnim);
         needle.startAnimation(needleAnim);
 
         currentAngle = toDegree;
     }
 
-    public void showVoltageWithAnimation(float voltage){
-        startNeedleAnimation( transformVoltageToAngle(voltage), 2000 );
+    public void showRpmWithAnimation(int rpm) {
+        startNeedleAnimation( transformRpmToAngle(rpm), 2000);
     }
 }

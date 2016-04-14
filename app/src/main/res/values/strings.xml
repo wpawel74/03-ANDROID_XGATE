@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">A03_XGATE</string>
+    <string name="NETWORK_ISSUE">Network Issue</string>
+    <string name="NOT_CONNECTED_TO_XGATE_NETWORK">Device is not connected to xGate network</string>
+    <string name="DISCONNECTED_FROM_XGATE_NETWORK">Disconnected from xGate network</string>
+    <string name="TV_LABEL_TIME_TRAVEL">Time from start</string>
+    <string name="TV_LABEL_SETTINGS">Settings</string>
+    <string name="TV_LABEL_TEMPERATURE">Temperature [°C]</string>
+    <string name="TV_LABEL_BATTERY_VOLTAGE">Battery Voltage</string>
+    <string name="TV_LABEL_DAILY_ODOMETER">Daily odometer</string>
 </resources>

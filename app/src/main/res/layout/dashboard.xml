@@ -59,13 +59,45 @@
             android:id="@+id/V_FLIPPER"
             android:layout_gravity="center_vertical">
 
-            <FrameLayout
+            <w_pawel74.a03_xgate.Tacho
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/clock"
+                android:id="@+id/TACHOMETER"
                 android:background="@drawable/coin_animation_000">
 
-            </FrameLayout>
+                <ImageView
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:id="@+id/IV_TACHOMETER_DIAL"
+                    android:src="@drawable/dial_tachometer_krpm"
+                    android:layout_gravity="center"
+                    android:visibility="visible" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/IV_TACHOMETER_NEEDLE_SHADOW"
+                    android:src="@drawable/needle_shadow"
+                    android:layout_marginTop="34px"
+                    android:layout_gravity="top|center_horizontal" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/IV_TACHOMETER_NEEDLE"
+                    android:src="@drawable/needle"
+                    android:layout_marginTop="34px"
+                    android:layout_gravity="top|center_horizontal"
+                    android:background="@drawable/needle" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/spindle"
+                    android:layout_gravity="center"
+                    android:visibility="visible" />
+
+            </w_pawel74.a03_xgate.Tacho>
 
             <include layout="@layout/mfd"
                 android:layout_width="match_parent"
@@ -82,7 +114,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:id="@+id/IV_SPEED_DIAL"
-                    android:src="@drawable/speedo_dial_kmh"
+                    android:src="@drawable/dial_speedo_kmh"
                     android:layout_gravity="center"
                     android:visibility="visible" />
 
@@ -97,7 +129,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/IV_SPEED_NEEDLE_SHADOW"
-                    android:src="@drawable/speedo_needle_shadow"
+                    android:src="@drawable/needle_shadow"
                     android:layout_marginTop="34px"
                     android:layout_gravity="top|center_horizontal" />
 
@@ -105,16 +137,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/IV_SPEED_NEEDLE"
-                    android:src="@drawable/speedo_needle"
+                    android:src="@drawable/needle"
                     android:layout_marginTop="34px"
                     android:layout_gravity="top|center_horizontal"
-                    android:background="@drawable/speedo_needle" />
+                    android:background="@drawable/needle" />
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/IV_SPEED_SPINDLE"
-                    android:src="@drawable/speedo_spindle"
+                    android:src="@drawable/spindle"
                     android:layout_gravity="center"
                     android:visibility="visible" />
 

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">A03_XGATE</string>
+    <string name="DISCONNECTED_FROM_XGATE_NETWORK">Rozłączenie z siecią xGate</string>
+    <string name="NETWORK_ISSUE">Problem z połączeniem</string>
+    <string name="NOT_CONNECTED_TO_XGATE_NETWORK">Urządzenie nie jest podłaczone do sieci xGate</string>
+    <string name="TV_LABEL_SETTINGS">Ustawienia</string>
+    <string name="TV_LABEL_TEMPERATURE">Temperatura</string>
+    <string name="TV_LABEL_TIME_TRAVEL">Czas jazdy</string>
+    <string name="TV_LABEL_BATTERY_VOLTAGE">Napiecie ładowania</string>
+    <string name="TV_LABEL_DAILY_ODOMETER">Dzienny licznik</string>
+</resources>

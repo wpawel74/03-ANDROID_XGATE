@@ -1,23 +1,27 @@
 package w_pawel74.a03_xgate;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.content.res.ResourcesCompat;
 import android.util.Log;
 import android.view.GestureDetector;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 import android.widget.ViewFlipper;
@@ -47,6 +51,10 @@ public class DashBoardActivity extends Activity implements GestureDetector.OnGes
 
     private static final String TAG = "DASHBOARD";
     private XGateProxy m_xGateProxy = null;
+    private Activity m_activity = null;
+    private PopupWindow m_popup = null;
+    private View m_popupLayout = null;
+    private boolean m_ignition = false;
 
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -62,6 +70,7 @@ public class DashBoardActivity extends Activity implements GestureDetector.OnGes
         super.onCreate(saveInstanceState);
         setContentView(R.layout.dashboard);
 
+        m_activity = this;
         m_detector = new GestureDetector(this, this);
         m_V_FLIPPER = (ViewFlipper) findViewById(R.id.V_FLIPPER);
         m_LL_BATTERY_MFD1 = (LinearLayout)findViewById(R.id.MFD1).findViewById(R.id.LL_BATTERY);
@@ -73,17 +82,24 @@ public class DashBoardActivity extends Activity implements GestureDetector.OnGes
         ((Button) findViewById(R.id.button)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((Speedo) findViewById(R.id.SPEEDO)).showSpeedWithAnimation(100);
+                ((Speedo) findViewById(R.id.SPEEDO)).showSpeedWithAnimation((new Random()).nextInt() % 130);
+                ((Tacho) findViewById(R.id.TACHOMETER)).showRpmWithAnimation((new Random()).nextInt() % 13000);
                 ((VoltGauge) findViewById(R.id.VOLT_MULTIMETER)).showVoltageWithAnimation(14500);
                 ((Odometer) findViewById(R.id.ODOMETER)).setOdometer((new Random()).nextInt());
                 setTemperature((float) 34.5);
                 setIcon(Icon.ICON_BATTERY, true);
+                //if(getContext() instanceof Activity){ //typecast}
+                    showPopup( m_activity, R.string.NETWORK_ISSUE, R.string.NOT_CONNECTED_TO_XGATE_NETWORK);
             }
         });
 
         // connect to onClick for B_SETTINGS buttons (MFD1 MFD2)
         ((Button)(findViewById(R.id.MFD1).findViewById(R.id.B_SETTINGS))).setOnClickListener(this);
         ((Button)(findViewById(R.id.MFD2).findViewById(R.id.B_SETTINGS))).setOnClickListener(this);
+
+        ((Speedo) findViewById(R.id.SPEEDO)).resetSpeedAnim();
+        ((Tacho) findViewById(R.id.TACHOMETER)).resetRpmAnim();
+        setVoltage(1300);
 
         m_xGateProxy = new XGateProxy( this );
         m_xGateProxy.setXGateOnDataListener( this );
@@ -104,7 +120,7 @@ public class DashBoardActivity extends Activity implements GestureDetector.OnGes
         Action viewAction = Action.newAction(
                 Action.TYPE_VIEW, // TODO: choose an action type.
                 "Main Page", // TODO: Define a title for the content shown.
-                // TODO: If you have web page content that matches this app activity's content,
+                // TODO: If you have web page content that matches this app m_activity's content,
                 // make sure this auto-generated web page URL is correct.
                 // Otherwise, set the URL to null.
                 Uri.parse("http://host/path"),
@@ -125,7 +141,7 @@ public class DashBoardActivity extends Activity implements GestureDetector.OnGes
         Action viewAction = Action.newAction(
                 Action.TYPE_VIEW, // TODO: choose an action type.
                 "Main Page", // TODO: Define a title for the content shown.
-                // TODO: If you have web page content that matches this app activity's content,
+                // TODO: If you have web page content that matches this app m_activity's content,
                 // make sure this auto-generated web page URL is correct.
                 // Otherwise, set the URL to null.
                 Uri.parse("http://host/path"),
@@ -209,7 +225,8 @@ public class DashBoardActivity extends Activity implements GestureDetector.OnGes
                 return true;
             }
         }
-        if (m_V_FLIPPER.getCurrentView().getId() == R.id.clock || m_V_FLIPPER.getCurrentView().getId() == R.id.SPEEDO)
+/*
+        if (m_V_FLIPPER.getCurrentView().getId() == R.id.TACHOMETER || m_V_FLIPPER.getCurrentView().getId() == R.id.SPEEDO)
             myAnimation = new MyAnimationDrawable(
                     (AnimationDrawable) ResourcesCompat.getDrawable(getResources(),
                             m_swipe_direction == SWIPE_DIRECTION_LEFT ?
@@ -223,7 +240,6 @@ public class DashBoardActivity extends Activity implements GestureDetector.OnGes
                                     R.drawable.animation_coin_90_0, null));
         } else
             Log.e(TAG, "reference in dashboard is unknown!");
-        ((Speedo) findViewById(R.id.SPEEDO)).resetSpeedAnim();
         m_V_FLIPPER.setInAnimation(null);
         m_V_FLIPPER.setBackgroundDrawable((Drawable) myAnimation);
         myAnimation.setAnimationFinishListener(new MyAnimationDrawable.IAnimationFinishListener() {
@@ -239,6 +255,16 @@ public class DashBoardActivity extends Activity implements GestureDetector.OnGes
         });
         m_V_FLIPPER.getCurrentView().setVisibility(View.INVISIBLE);
         ((AnimationDrawable) m_V_FLIPPER.getBackground()).start();
+*/
+        if (this.m_swipe_direction == SWIPE_DIRECTION_LEFT) {
+            m_V_FLIPPER.setInAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.coin_fade_in));
+            m_V_FLIPPER.setOutAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.coin_fade_out));
+            m_V_FLIPPER.showNext();
+        } else {
+            m_V_FLIPPER.setInAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.coin_fade_in));
+            m_V_FLIPPER.setOutAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.coin_fade_out));
+            m_V_FLIPPER.showPrevious();
+        }
         return true;
     }
 
@@ -253,6 +279,50 @@ public class DashBoardActivity extends Activity implements GestureDetector.OnGes
                     PrefsActivity.class);
             startActivity(intent);
         }
+    }
+
+    // The method that displays the popup.
+    public void showPopup(final Activity context, int rid_title, int rid_message) {
+        int popupWidth;
+        int popupHeight;
+
+        // Inflate the popup_layout.xml
+        LinearLayout viewGroup = (LinearLayout) context.findViewById(R.id.LL_POPUP);
+        LayoutInflater layoutInflater = (LayoutInflater) context
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        m_popupLayout = layoutInflater.inflate(R.layout.popup, viewGroup);
+
+        ((TextView)(m_popupLayout.findViewById(R.id.TV_POPUP_TITLE))).setText(rid_title);
+        ((TextView)(m_popupLayout.findViewById(R.id.TV_POPUP_INFORMATION))).setText(rid_message);
+        m_popupLayout.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+
+        popupHeight = m_popupLayout.getMeasuredHeight();
+        popupWidth = m_popupLayout.getMeasuredWidth();
+
+        hidePopup();
+
+        // Creating the PopupWindow
+        m_popup = new PopupWindow(m_popupLayout, popupWidth, popupHeight, true );
+
+        // Clear the default translucent background
+        m_popup.setBackgroundDrawable(new BitmapDrawable());
+        m_popup.setAnimationStyle(R.style.PopupAnimation);
+
+        new Handler().postDelayed(new Runnable() {
+
+            public void run() {
+                m_popup.showAtLocation(m_popupLayout, Gravity.CENTER, 0, 0);
+            }
+
+        }, 100L);
+    }
+
+    /**
+     * hide popup
+     */
+    public void hidePopup(){
+        if( m_popup != null && m_popup.isShowing() == true )
+            m_popup.dismiss();
     }
 
     /*----------------------------------------------------------------------
@@ -328,7 +398,7 @@ public class DashBoardActivity extends Activity implements GestureDetector.OnGes
         } else if ( words[0].startsWith("TEMPERATURE") ){
             setTemperature(Float.valueOf(words[2]));
         } else if ( words[0].startsWith("SPEED") ){
-            ((Speedo) findViewById(R.id.SPEEDO)).showSpeedWithAnimation(Integer.valueOf(words[1]));
+            ((Tacho) findViewById(R.id.SPEEDO)).showRpmWithAnimation(Integer.valueOf(words[1]));
         } else if( words[0].startsWith("ODOMETER") ){
             ((Odometer) findViewById(R.id.ODOMETER)).setOdometer(Integer.valueOf(words[1]));
         } else if( words[0].startsWith("DAILY_ODOMETER") ){
@@ -343,6 +413,9 @@ public class DashBoardActivity extends Activity implements GestureDetector.OnGes
             setIcon(Icon.ICON_FUEL, (ico & FLAG_INPUT_GPIO_FUEL_WARNING) == FLAG_INPUT_GPIO_FUEL_WARNING ? true: false );
             setIcon(Icon.ICON_TEMPERATURE, (ico & FLAG_INPUT_GPIO_TEMP_WARNING) == FLAG_INPUT_GPIO_TEMP_WARNING ? true: false );
             setIcon(Icon.ICON_BATTERY, (ico & FLAG_INPUT_GPIO_BATTERY_WARNING) == FLAG_INPUT_GPIO_BATTERY_WARNING ? true: false );
+        } else if( words[0].startsWith("IGNITION") ) {
+            m_ignition = Integer.valueOf(words[1]) == 1 ? true: false;
+            setIcon(Icon.ICON_ENGINE, !m_ignition ? true: false );
         }
     }
 

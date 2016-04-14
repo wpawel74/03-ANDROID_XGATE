@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:id="@+id/LL_POPUP"
+    android:layout_height="wrap_content"
+    android:background="@drawable/popup_bg"
+    android:padding="30dp"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/TV_POPUP_TITLE"
+        android:text="AAA"
+        style="@style/PopupLabelFont" />
+
+    <TextView
+        android:id="@+id/TV_POPUP_INFORMATION"
+        android:text="AAAAAAAA"
+        style="@style/PopupInfoFont" />
+</LinearLayout>

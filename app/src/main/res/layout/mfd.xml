@@ -24,7 +24,7 @@
 
             <TextView
                 style="@style/MfdLabelFont"
-                android:text="Daily Odometer"
+                android:text="@string/TV_LABEL_DAILY_ODOMETER"
                 android:id="@+id/TV_LABEL_DAILY_ODOMETER" />
 
             <w_pawel74.a03_xgate.Odometer
@@ -98,7 +98,7 @@
 
             <TextView
                 style="@style/MfdLabelFont"
-                android:text="Battery Voltage"
+                android:text="@string/TV_LABEL_BATTERY_VOLTAGE"
                 android:id="@+id/TV_LABEL_BATTERY_VOLTAGE" />
 
             <w_pawel74.a03_xgate.VoltGauge
@@ -115,7 +115,6 @@
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="30px"
                     android:layout_gravity="center_horizontal|top"
                     android:id="@+id/IV_VOLT_NEDLE"
                     android:src="@drawable/volt_nedle"/>
@@ -135,12 +134,11 @@
 
             <TextView
                 style="@style/MfdLabelFont"
-                android:text="Temperature [°C]"
+                android:text="@string/TV_LABEL_TEMPERATURE"
                 android:id="@+id/TV_LABEL_TEMPERATURE" />
 
             <TextView
                 style="@style/MfdTemprtatureFont"
-                android:text="23.3"
                 android:id="@+id/TV_TEMPERATURE" />
         </LinearLayout>
 
@@ -156,7 +154,7 @@
 
             <TextView
                 style="@style/MfdLabelFont"
-                android:text="Time Travel"
+                android:text="@string/TV_LABEL_TIME_TRAVEL"
                 android:id="@+id/TV_LABEL_TIME_TRAVEL" />
 
             <LinearLayout
@@ -193,7 +191,7 @@
 
             <TextView
                 style="@style/MfdLabelFont"
-                android:text="Settings"
+                android:text="@string/TV_LABEL_SETTINGS"
                 android:id="@+id/TV_LABEL_SETTINGS" />
 
             <LinearLayout
