@@ -9,11 +9,9 @@
 
     <TextView
         android:id="@+id/TV_POPUP_TITLE"
-        android:text="AAA"
         style="@style/PopupLabelFont" />
 
     <TextView
         android:id="@+id/TV_POPUP_INFORMATION"
-        android:text="AAAAAAAA"
         style="@style/PopupInfoFont" />
 </LinearLayout>

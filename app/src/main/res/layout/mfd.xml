@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_gravity="center"
+    android:paddingTop="30sp"
+    android:paddingBottom="30sp"
     android:background="@drawable/coin_animation_090" >
 
     <ViewFlipper
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:id="@+id/VF_MFD"
-        android:layout_margin="60dp">
+        android:layout_gravity="center">
 
         <!-- *************************************************************
                              DAILY ODOMETER LAYOUT
@@ -17,9 +20,8 @@
 
         <LinearLayout
             android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
             android:id="@+id/LL_DAILY_ODO">
 
             <TextView
@@ -27,63 +29,71 @@
                 android:text="@string/TV_LABEL_DAILY_ODOMETER"
                 android:id="@+id/TV_LABEL_DAILY_ODOMETER" />
 
-            <w_pawel74.a03_xgate.Odometer
-                android:orientation="horizontal"
+            <RelativeLayout
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:gravity="center"
-                android:id="@+id/LV_DAILY_ODOMETER" >
+                android:layout_height="fill_parent">
 
-                <include layout="@layout/odo_disc"
+                <w_pawel74.a03_xgate.Odometer
+                    android:id="@+id/LV_DAILY_ODOMETER"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/ODO_xNxxx"
-                    android:visibility="visible" />
+                    android:paddingTop="30dp"
+                    android:layout_centerInParent="true"
+                    android:orientation="horizontal">
 
-                <include layout="@layout/odo_disc"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/ODO_xxNxx"
-                    android:visibility="visible" />
+                    <include
+                        android:id="@+id/ODO_xNxxx"
+                        layout="@layout/odo_disc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:visibility="visible" />
 
-                <include layout="@layout/odo_disc"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/ODO_xxxNx"
-                    android:visibility="visible" />
+                    <include
+                        android:id="@+id/ODO_xxNxx"
+                        layout="@layout/odo_disc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:visibility="visible" />
 
-                <!-- It's not possible to attributes other than layout params, visibility or ID on an include tag.
-                     This includes custom attributes. The inflater only applies the ID and visibility attributes to
-                     the included layout. That we need to include all layout inside.
-                     It's not clear but we not have a choice -->
-                <w_pawel74.a03_xgate.OdometerDisc
-                    xmlns:android="http://schemas.android.com/apk/res/android"
-                    xmlns:a03_xgate="http://schemas.android.com/apk/res-auto"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/ODO_xxxxN"
-                    android:visibility="visible"
-                    a03_xgate:invertColors="true" >
+                    <include
+                        android:id="@+id/ODO_xxxNx"
+                        layout="@layout/odo_disc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:visibility="visible" />
 
-                    <ImageSwitcher
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:id="@+id/IS_DISC_SWITCHER"
-                        android:layout_gravity="fill_horizontal" >
-                    </ImageSwitcher>
+                    <!-- It's not possible to attributes other than layout params, visibility or ID on an include tag.
+                         This includes custom attributes. The inflater only applies the ID and visibility attributes to
+                         the included layout. That we need to include all layout inside.
+                         It's not clear but we not have a choice -->
+                    <w_pawel74.a03_xgate.OdometerDisc xmlns:android="http://schemas.android.com/apk/res/android"
+                        xmlns:a03_xgate="http://schemas.android.com/apk/res-auto"
+                        android:id="@+id/ODO_xxxxN"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:visibility="visible"
+                        a03_xgate:invertColors="true">
 
-                </w_pawel74.a03_xgate.OdometerDisc>
+                        <ImageSwitcher
+                            android:id="@+id/IS_DISC_SWITCHER"
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:layout_gravity="fill_horizontal"></ImageSwitcher>
 
-                <!-- do not forgot that layout_gravity attribute is set default on used style -->
-                <TextView
-                    style="@style/MfdLabelFont"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="km"
-                    android:id="@+id/TV_ODOMETER_UNIT" />
+                    </w_pawel74.a03_xgate.OdometerDisc>
+                    <!-- do not forgot that layout_gravity attribute is set default on used style -->
+                    <TextView
+                        android:id="@+id/TV_ODOMETER_UNIT"
+                        style="@style/MfdLabelFont"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:layout_marginLeft="3dp"
+                        android:text="km" />
 
-            </w_pawel74.a03_xgate.Odometer>
+                </w_pawel74.a03_xgate.Odometer>
+
+            </RelativeLayout>
 
         </LinearLayout>
 
@@ -92,8 +102,8 @@
              ************************************************************* -->
         <LinearLayout
             android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
             android:id="@+id/LL_BATTERY">
 
             <TextView
@@ -101,25 +111,32 @@
                 android:text="@string/TV_LABEL_BATTERY_VOLTAGE"
                 android:id="@+id/TV_LABEL_BATTERY_VOLTAGE" />
 
-            <w_pawel74.a03_xgate.VoltGauge
-                android:orientation="vertical"
+            <FrameLayout
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:id="@+id/VOLT_MULTIMETER">
+                android:gravity="center" >
 
-                <ImageView
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:src="@drawable/volt_dial"/>
+                <w_pawel74.a03_xgate.VoltGauge
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:id="@+id/VOLT_MULTIMETER">
 
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center_horizontal|top"
-                    android:id="@+id/IV_VOLT_NEDLE"
-                    android:src="@drawable/volt_nedle"/>
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:src="@drawable/volt_dial"/>
 
-            </w_pawel74.a03_xgate.VoltGauge>
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal|top"
+                        android:id="@+id/IV_VOLT_NEDLE"
+                        android:src="@drawable/volt_nedle"/>
+
+                </w_pawel74.a03_xgate.VoltGauge>
+            </FrameLayout>
 
         </LinearLayout>
 
@@ -128,8 +145,8 @@
              ************************************************************* -->
         <LinearLayout
             android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
             android:id="@+id/LL_TEMPERATURE">
 
             <TextView
@@ -137,9 +154,19 @@
                 android:text="@string/TV_LABEL_TEMPERATURE"
                 android:id="@+id/TV_LABEL_TEMPERATURE" />
 
-            <TextView
-                style="@style/MfdTemprtatureFont"
-                android:id="@+id/TV_TEMPERATURE" />
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:gravity="center">
+
+                <TextView
+                    style="@style/MfdTemprtatureFont"
+                    android:layout_gravity="center"
+                    android:id="@+id/TV_TEMPERATURE" />
+
+            </LinearLayout>
+
         </LinearLayout>
 
         <!-- *************************************************************
@@ -148,8 +175,8 @@
 
         <LinearLayout
             android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
             android:id="@+id/LL_TIME_TRAVEL">
 
             <TextView
@@ -159,18 +186,19 @@
 
             <LinearLayout
                 android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:id="@+id/LL_TIME_TRAVEL_CLOCK">
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:gravity="center" >
 
                 <TextView
                         style="@style/TimeTravelFont_HHMM"
+                        android:layout_gravity="center"
                         android:text="10:34"
                         android:id="@+id/TV_TIME_TRAVEL_HHMM" />
 
                 <TextView
                         style="@style/TimeTravelFont_SS"
+                        android:layout_gravity="center"
                         android:text="22"
                         android:paddingLeft="7px"
                         android:id="@+id/TV_TIME_TRAVEL_SS" />
@@ -185,8 +213,8 @@
 
         <LinearLayout
             android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
             android:id="@+id/LL_SETTINGS">
 
             <TextView
@@ -196,8 +224,8 @@
 
             <LinearLayout
                 android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
                 android:gravity="center"
                 android:id="@+id/LL_SETTINGS_LAYER">
 

@@ -3,7 +3,8 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#222222">
+    android:keepScreenOn="true"
+    android:background="#202020">
 
     <LinearLayout
         android:orientation="vertical"
@@ -60,8 +61,8 @@
             android:layout_gravity="center_vertical">
 
             <w_pawel74.a03_xgate.Tacho
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
                 android:id="@+id/TACHOMETER"
                 android:background="@drawable/coin_animation_000">
 
@@ -74,20 +75,16 @@
                     android:visibility="visible" />
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
                     android:id="@+id/IV_TACHOMETER_NEEDLE_SHADOW"
-                    android:src="@drawable/needle_shadow"
-                    android:layout_marginTop="34px"
-                    android:layout_gravity="top|center_horizontal" />
+                    android:src="@drawable/needle_shadow" />
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
                     android:id="@+id/IV_TACHOMETER_NEEDLE"
                     android:src="@drawable/needle"
-                    android:layout_marginTop="34px"
-                    android:layout_gravity="top|center_horizontal"
                     android:background="@drawable/needle" />
 
                 <ImageView
@@ -100,8 +97,8 @@
             </w_pawel74.a03_xgate.Tacho>
 
             <include layout="@layout/mfd"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
                 android:id="@+id/MFD1" />
 
             <w_pawel74.a03_xgate.Speedo
@@ -126,20 +123,16 @@
                     android:id="@+id/ODOMETER" />
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
                     android:id="@+id/IV_SPEED_NEEDLE_SHADOW"
-                    android:src="@drawable/needle_shadow"
-                    android:layout_marginTop="34px"
-                    android:layout_gravity="top|center_horizontal" />
+                    android:src="@drawable/needle_shadow" />
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
                     android:id="@+id/IV_SPEED_NEEDLE"
                     android:src="@drawable/needle"
-                    android:layout_marginTop="34px"
-                    android:layout_gravity="top|center_horizontal"
                     android:background="@drawable/needle" />
 
                 <ImageView
@@ -152,8 +145,8 @@
             </w_pawel74.a03_xgate.Speedo>
 
             <include layout="@layout/mfd"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
                 android:id="@+id/MFD2" />
 
         </ViewFlipper>

@@ -107,10 +107,10 @@ public class Speedo extends FrameLayout {
 
         RotateAnimation shadowAnim = new RotateAnimation(lastDegree, toDegree,
                 RotateAnimation.RELATIVE_TO_SELF, (float) 0.5,
-                RotateAnimation.RELATIVE_TO_SELF, (float) 0.70);
+                RotateAnimation.RELATIVE_TO_SELF, (float) 0.5);
 
         RotAnim needleAnim = new RotAnim(lastDegree, toDegree, RotateAnimation.RELATIVE_TO_SELF,
-                (float) 0.5, RotateAnimation.RELATIVE_TO_SELF, (float) 0.74);
+                (float) 0.5, RotateAnimation.RELATIVE_TO_SELF, (float) 0.5);
 
         this.needleAnim = needleAnim;
 
