@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.BitmapDrawable;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -24,10 +23,6 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 import android.widget.ViewFlipper;
-
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.common.api.GoogleApiClient;
 
 import java.util.Random;
 
@@ -54,11 +49,6 @@ public class DashBoardActivity extends Activity implements GestureDetector.OnGes
     private View m_popupLayout = null;
     private boolean m_ignition = false;
 
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    private GoogleApiClient client;
     private GestureDetector m_detector = null;
     private ViewFlipper m_V_FLIPPER = null;
 
@@ -82,7 +72,6 @@ public class DashBoardActivity extends Activity implements GestureDetector.OnGes
             public void onClick(View v) {
                 ((Speedo) findViewById(R.id.SPEEDO)).showSpeedWithAnimation((new Random()).nextInt() % 130);
                 ((Tacho) findViewById(R.id.TACHOMETER)).showRpmWithAnimation((new Random()).nextInt() % 13000);
-                ((VoltGauge) findViewById(R.id.VOLT_MULTIMETER)).showVoltageWithAnimation(14500);
                 ((Odometer) findViewById(R.id.ODOMETER)).setOdometer((new Random()).nextInt());
                 setTemperature((float) 34.5);
                 setIcon(Icon.ICON_BATTERY, true);
@@ -103,30 +92,11 @@ public class DashBoardActivity extends Activity implements GestureDetector.OnGes
         m_xGateProxy = new XGateProxy( this );
         m_xGateProxy.setXGateOnDataListener( this );
         m_xGateProxy.execute();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
     @Override
     public void onStart() {
         super.onStart();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client.connect();
-        Action viewAction = Action.newAction(
-                Action.TYPE_VIEW, // TODO: choose an action type.
-                "Main Page", // TODO: Define a title for the content shown.
-                // TODO: If you have web page content that matches this app m_activity's content,
-                // make sure this auto-generated web page URL is correct.
-                // Otherwise, set the URL to null.
-                Uri.parse("http://host/path"),
-                // TODO: Make sure this auto-generated app deep link URI is correct.
-                Uri.parse("android-app://w_pawel74.a03_xgate/http/host/path")
-        );
-        AppIndex.AppIndexApi.start(client, viewAction);
     }
 
     @Override
@@ -134,21 +104,6 @@ public class DashBoardActivity extends Activity implements GestureDetector.OnGes
         super.onStop();
 
         m_xGateProxy.cancel(true);
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        Action viewAction = Action.newAction(
-                Action.TYPE_VIEW, // TODO: choose an action type.
-                "Main Page", // TODO: Define a title for the content shown.
-                // TODO: If you have web page content that matches this app m_activity's content,
-                // make sure this auto-generated web page URL is correct.
-                // Otherwise, set the URL to null.
-                Uri.parse("http://host/path"),
-                // TODO: Make sure this auto-generated app deep link URI is correct.
-                Uri.parse("android-app://w_pawel74.a03_xgate/http/host/path")
-        );
-        AppIndex.AppIndexApi.end(client, viewAction);
-        client.disconnect();
     }
 
     @Override
@@ -304,6 +259,16 @@ public class DashBoardActivity extends Activity implements GestureDetector.OnGes
 
         // Creating the PopupWindow
         m_popup = new PopupWindow(m_popupLayout, popupWidth, popupHeight, true );
+
+        // hide popup onClick inside
+        m_popup.setTouchInterceptor(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if( m_popup != null )
+                    m_popup.dismiss();
+                return false;
+            }
+        });
 
         // Clear the default translucent background
         m_popup.setBackgroundDrawable(new BitmapDrawable());
@@ -486,16 +451,18 @@ public class DashBoardActivity extends Activity implements GestureDetector.OnGes
 
     /**
      * set voltage on guage
-     * @param voltate           voltage in milivolts unit, eg value 1000 mean 1V
+     * @param voltage           voltage in milivolts unit, eg value 1000 mean 1V
      */
-    public void setVoltage( int voltate ) {
-        ((VoltGauge)m_LL_BATTERY_MFD1.findViewById(R.id.VOLT_MULTIMETER)).showVoltageWithAnimation(voltate);
-        ((VoltGauge)m_LL_BATTERY_MFD2.findViewById(R.id.VOLT_MULTIMETER)).showVoltageWithAnimation(voltate);
+    public void setVoltage( int voltage ) {
+        ((VoltGauge)m_LL_BATTERY_MFD1.findViewById(R.id.VOLT_MULTIMETER)).showVoltageWithAnimation(voltage);
+        ((VoltGauge)m_LL_BATTERY_MFD2.findViewById(R.id.VOLT_MULTIMETER)).showVoltageWithAnimation(voltage);
     }
 
     public void setDailyOdometer( int odometer ) {
-        ((Odometer)findViewById(R.id.MFD1).findViewById(R.id.LV_DAILY_ODOMETER)).setOdometer(odometer);
-        ((Odometer)findViewById(R.id.MFD2).findViewById(R.id.LV_DAILY_ODOMETER)).setOdometer(odometer);
+        if( findViewById(R.id.MFD1).findViewById(R.id.LV_DAILY_ODOMETER) != null )
+            ((Odometer)findViewById(R.id.MFD1).findViewById(R.id.LV_DAILY_ODOMETER)).setOdometer(odometer);
+        if( findViewById(R.id.MFD2).findViewById(R.id.LV_DAILY_ODOMETER) != null )
+            ((Odometer)findViewById(R.id.MFD2).findViewById(R.id.LV_DAILY_ODOMETER)).setOdometer(odometer);
     }
 
 }
