@@ -88,15 +88,14 @@ public class DashBoardActivity extends Activity implements GestureDetector.OnGes
         ((Tacho) findViewById(R.id.TACHOMETER)).resetRpmAnim();
         ((VoltGauge)m_LL_BATTERY_MFD1.findViewById(R.id.VOLT_MULTIMETER)).resetVoltAnim();
         ((VoltGauge)m_LL_BATTERY_MFD2.findViewById(R.id.VOLT_MULTIMETER)).resetVoltAnim();
-
-        m_xGateProxy = new XGateProxy( this );
-        m_xGateProxy.setXGateOnDataListener( this );
-        m_xGateProxy.execute();
     }
 
     @Override
     public void onStart() {
         super.onStart();
+        m_xGateProxy = new XGateProxy( this );
+        m_xGateProxy.setXGateOnDataListener( this );
+        m_xGateProxy.execute();
     }
 
     @Override
@@ -104,14 +103,21 @@ public class DashBoardActivity extends Activity implements GestureDetector.OnGes
         super.onStop();
 
         m_xGateProxy.cancel(true);
+        m_xGateProxy.setXGateOnDataListener( null );
+        m_xGateProxy = null;
     }
 
     @Override
     protected void onResume(){
         super.onResume();
         dashBoardViewConfiguration();
-        if( m_xGateProxy.getStatus() == AsyncTask.Status.FINISHED )
+
+        if( m_xGateProxy == null ) {
+            // Just like threads, AsyncTasks can't be reused.
+            m_xGateProxy = new XGateProxy(this);
+            m_xGateProxy.setXGateOnDataListener(this);
             m_xGateProxy.execute();
+        }
     }
 
     @Override
