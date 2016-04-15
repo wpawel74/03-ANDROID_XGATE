@@ -50,7 +50,7 @@ public class Speedo extends FrameLayout {
     }
 
     public void resetSpeedAnim() {
-        startNeedleAnimation(transformSpeedToAngle(currentSpeed), 0);
+        startNeedleAnimation(transformSpeedToAngle(0), 0);
     }
 
     /**
@@ -85,7 +85,6 @@ public class Speedo extends FrameLayout {
 
     private final float MAX_ANGLE = 140;
     private final int MAX_SPEED = 130;
-    private int currentSpeed = 0;
     private float currentAngle = 0;
     ImageView needle = null;
     ImageView needleShadow = null;

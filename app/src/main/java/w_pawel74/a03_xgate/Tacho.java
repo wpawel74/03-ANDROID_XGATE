@@ -50,7 +50,7 @@ public class Tacho extends FrameLayout {
     }
 
     public void resetRpmAnim() {
-        startNeedleAnimation(transformRpmToAngle(currentRpm), 0);
+        startNeedleAnimation(transformRpmToAngle(0), 0);
     }
 
     /**
@@ -83,7 +83,6 @@ public class Tacho extends FrameLayout {
 
     private final float MAX_ANGLE = 140;
     private final int MAX_RPM = 13000;
-    private int currentRpm = 0;
     private float currentAngle = 0;
     ImageView needle = null;
     ImageView needleShadow = null;

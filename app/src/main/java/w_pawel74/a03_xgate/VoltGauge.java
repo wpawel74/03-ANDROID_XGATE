@@ -35,8 +35,8 @@ public class VoltGauge extends FrameLayout {
      * @return angle for rotation the needle
      */
     public float transformVoltageToAngle(float current_voltage){
-        if (current_voltage < 11000)
-            current_voltage = 11000;
+        if (current_voltage < MIN_VOLTAGE)
+            current_voltage = MIN_VOLTAGE;
         if (current_voltage > MAX_VOLTAGE)
             current_voltage = MAX_VOLTAGE;
 
@@ -77,8 +77,8 @@ public class VoltGauge extends FrameLayout {
     };
 
     private final float         MAX_ANGLE       = 104;
+    private final int           MIN_VOLTAGE     = 11000;
     private final int           MAX_VOLTAGE     = 15000;
-    private int                 currentVoltage  = 0;
     private float               currentAngle    = 0;
     ImageView                   needle          = null;
     LinearInterpolator          interpolator    = new LinearInterpolator();
