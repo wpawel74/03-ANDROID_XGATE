@@ -81,8 +81,6 @@ public class Speedo extends FrameLayout {
         }
     }
 
-    ;
-
     private final float MAX_ANGLE = 140;
     private final int MAX_SPEED = 130;
     private float currentAngle = 0;
@@ -133,5 +131,67 @@ public class Speedo extends FrameLayout {
 
     public void showSpeedWithAnimation(float speed) {
         startNeedleAnimation(transformSpeedToAngle(speed), 2000);
+        m_averageSpeed.addSpeedSample( speed );
+        m_averageSpeed.startAnimation( 300 );
     }
+
+    /**
+     * Average speed feature
+     */
+    class AverageSpeedProcessingUnit {
+        private double m_sumSample = 0;
+        private int m_samples = 0;
+
+        private float m_currentAngle = 0;
+        LinearInterpolator m_interpolator = new LinearInterpolator();
+        RotAnim m_markerAnim = null;
+
+        /**
+         * reset average speed calculate machine
+         */
+        public void reset(){
+            m_sumSample = 0;
+            m_samples = 0;
+            this.startAnimation(0);
+        }
+
+        /**
+         * add speed sample to average speed calculate machine
+         * @param speed
+         */
+        public void addSpeedSample( float speed ){
+            m_sumSample += speed;
+            m_samples++;
+        }
+
+        /**
+         * get average speed
+         * @return
+         */
+        public float getAverageValue(){
+            return (float)(m_sumSample/((m_samples == 0 ? 1: m_samples) * 1.0f));
+        }
+
+        void startAnimation(int duration){
+            float lastDegree = (this.m_markerAnim != null ? this.m_markerAnim.getLastDegree() : m_currentAngle);
+            float toDegree = transformSpeedToAngle( getAverageValue() );
+
+            RotAnim needleAnim = new RotAnim(lastDegree, toDegree, RotateAnimation.RELATIVE_TO_SELF,
+                    (float) 0.5, RotateAnimation.RELATIVE_TO_SELF, (float) 0.5);
+
+            m_markerAnim = needleAnim;
+
+            needleAnim.setInterpolator(m_interpolator);
+
+            needleAnim.setDuration( duration );
+            needleAnim.setFillAfter(true);
+
+            ImageView marker = (ImageView) findViewById(R.id.IV_SPEED_AVERAGE_MARKER);
+            marker.startAnimation(needleAnim);
+
+            this.m_currentAngle = toDegree;
+        }
+    }
+
+    public AverageSpeedProcessingUnit       m_averageSpeed = new AverageSpeedProcessingUnit();
 }

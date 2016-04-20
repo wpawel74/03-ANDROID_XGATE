@@ -125,6 +125,12 @@
                 <ImageView
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
+                    android:id="@+id/IV_SPEED_AVERAGE_MARKER"
+                    android:src="@drawable/average_marker" />
+
+                <ImageView
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
                     android:id="@+id/IV_SPEED_NEEDLE_SHADOW"
                     android:src="@drawable/needle_shadow" />
 
