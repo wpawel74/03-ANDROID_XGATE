@@ -46,6 +46,7 @@ public class DashBoardActivity extends Activity implements View.OnClickListener,
 
     private GestureDetector m_detector = null;
     private ViewFlipper m_V_FLIPPER = null;
+    private Tours m_history = null;
 
     @Override
     public void onCreate(Bundle saveInstanceState) {
@@ -90,6 +91,38 @@ public class DashBoardActivity extends Activity implements View.OnClickListener,
         ((Tacho) findViewById(R.id.TACHOMETER)).resetRpmAnim();
         ((VoltGauge)m_LL_BATTERY_MFD1.findViewById(R.id.VOLT_MULTIMETER)).resetVoltAnim();
         ((VoltGauge)m_LL_BATTERY_MFD2.findViewById(R.id.VOLT_MULTIMETER)).resetVoltAnim();
+
+        m_history = new Tours();
+        m_history.load(this);
+
+        class MySimpleAdapter extends SimpleAdapter {
+            /**
+             * Constructor
+             *
+             * @param context  The context where the View associated with this SimpleAdapter is running
+             * @param data     A List of Maps. Each entry in the List corresponds to one row in the list. The
+             *                 Maps contain the data for each row, and should include all the entries specified in
+             *                 "from"
+             * @param resource Resource identifier of a view layout that defines the views for this list
+             *                 item. The layout file should include at least those named views defined in "to"
+             * @param from     A list of column names that will be added to the Map associated with each
+             *                 item.
+             * @param to       The views that should display column in the "from" parameter. These should all be
+             *                 TextViews. The first N views in this list are given the values of the first N columns
+             */
+            public MySimpleAdapter(Context context, List<? extends Map<String, ?>> data, int resource, String[] from, int[] to) {
+                super(context, data, resource, from, to);
+            }
+
+            @Override
+            public boolean isEnabled(int position) {
+                return false;
+            }
+        }
+        MySimpleAdapter simpleAdapter = new MySimpleAdapter(this, m_history.getList(), R.layout.history_item, m_history.from(), m_history.to() );
+        ((ListView)(findViewById(R.id.MFD1).findViewById(R.id.LV_TOURS))).setAdapter( simpleAdapter );
+        ((ListView)(findViewById(R.id.MFD2).findViewById(R.id.LV_TOURS))).setAdapter( simpleAdapter );
+
 
         m_detector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
             @Override
