@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.BitmapDrawable;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -19,28 +18,24 @@ import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 import android.widget.ViewFlipper;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 /**
  * Created by wisniewskip on 2016-04-04.
  */
-public class DashBoardActivity extends Activity implements GestureDetector.OnGestureListener, View.OnClickListener, XGateProxy.IxGateOnDataListener {
+public class DashBoardActivity extends Activity implements View.OnClickListener, XGateProxy.IxGateOnDataListener {
 
-    private static final int SWIPE_MIN_DISTANCE = 120;
-    private static final int SWIPE_THRESHOLD_VELOCITY = 200;
-
-    private static final int SWIPE_DIRECTION_UNKNOWN = 0;
-    private static final int SWIPE_DIRECTION_LEFT = 1;
-    private static final int SWIPE_DIRECTION_RIGHT = 2;
-    private static final int SWIPE_DIRECTION_UP = 3;
-    private static final int SWIPE_DIRECTION_DOWN = 4;
-
-    private static int m_swipe_direction = SWIPE_DIRECTION_UNKNOWN;
+    private static final int SWIPE_MIN_DISTANCE = 60;
+    private static final int SWIPE_THRESHOLD_VELOCITY = 50;
 
     private static final String TAG = "DASHBOARD";
     private XGateProxy m_xGateProxy = null;
@@ -59,7 +54,7 @@ public class DashBoardActivity extends Activity implements GestureDetector.OnGes
         setContentView(R.layout.dashboard);
 
         m_activity = this;
-        m_detector = new GestureDetector(this, this);
+
         m_V_FLIPPER = (ViewFlipper) findViewById(R.id.V_FLIPPER);
         m_LL_BATTERY_MFD1 = (LinearLayout)findViewById(R.id.MFD1).findViewById(R.id.LL_BATTERY);
         m_LL_BATTERY_MFD2 = (LinearLayout)findViewById(R.id.MFD2).findViewById(R.id.LL_BATTERY);
@@ -76,18 +71,59 @@ public class DashBoardActivity extends Activity implements GestureDetector.OnGes
                 setTemperature((float) 34.5);
                 setIcon(Icon.ICON_BATTERY, true);
                 //if(getContext() instanceof Activity){ //typecast}
-                    showPopup( m_activity, R.string.POPUP_NETWORK_ISSUE, R.string.POPUP_XGATE_NOT_FOUND);
+                //showPopup( m_activity, R.string.POPUP_NETWORK_ISSUE, R.string.POPUP_XGATE_NOT_FOUND);
             }
         });
 
         // connect to onClick for B_SETTINGS buttons (MFD1 MFD2)
         ((Button)(findViewById(R.id.MFD1).findViewById(R.id.B_SETTINGS))).setOnClickListener(this);
         ((Button)(findViewById(R.id.MFD2).findViewById(R.id.B_SETTINGS))).setOnClickListener(this);
+        m_V_FLIPPER.setInAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.coin_fade_in));
+        m_V_FLIPPER.setOutAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.coin_fade_out));
+        ((ViewFlipper)(findViewById(R.id.MFD1)).findViewById(R.id.VF_MFD)).setInAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.mfd_down_in));
+        ((ViewFlipper)(findViewById(R.id.MFD1)).findViewById(R.id.VF_MFD)).setOutAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.mfd_down_out));
+        ((ViewFlipper)(findViewById(R.id.MFD2)).findViewById(R.id.VF_MFD)).setInAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.mfd_down_in));
+        ((ViewFlipper)(findViewById(R.id.MFD2)).findViewById(R.id.VF_MFD)).setOutAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.mfd_down_out));
 
         ((Speedo) findViewById(R.id.SPEEDO)).resetSpeedAnim();
+        ((Speedo) findViewById(R.id.SPEEDO)).m_averageSpeed.reset();
         ((Tacho) findViewById(R.id.TACHOMETER)).resetRpmAnim();
         ((VoltGauge)m_LL_BATTERY_MFD1.findViewById(R.id.VOLT_MULTIMETER)).resetVoltAnim();
         ((VoltGauge)m_LL_BATTERY_MFD2.findViewById(R.id.VOLT_MULTIMETER)).resetVoltAnim();
+
+        m_detector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
+            @Override
+            public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+
+                if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+                    Log.d(TAG, "SWIPE_DRIECTION_LEFT");
+                    m_V_FLIPPER.showNext();
+                    return true;
+                } else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+                    Log.d(TAG, "SWIPE_DRIECTION_RIGHT");
+                    m_V_FLIPPER.showPrevious();
+                    return true;
+                } else {
+                    if (m_V_FLIPPER.getCurrentView().getId() == R.id.MFD1 || m_V_FLIPPER.getCurrentView().getId() == R.id.MFD2) {
+                        if (e1.getY() - e2.getY() > SWIPE_MIN_DISTANCE && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
+                            Log.d(TAG, "SWIPE_DRIECTION_UP");
+                            ((ViewFlipper)(m_V_FLIPPER.getCurrentView().findViewById(R.id.VF_MFD))).setInAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.mfd_up_in));
+                            ((ViewFlipper)(m_V_FLIPPER.getCurrentView().findViewById(R.id.VF_MFD))).setOutAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.mfd_up_out));
+                            ((ViewFlipper) m_V_FLIPPER.getCurrentView().findViewById(R.id.VF_MFD)).showNext();
+                            return true;
+                        } else if (e2.getY() - e1.getY() > SWIPE_MIN_DISTANCE && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
+                            Log.d(TAG, "SWIPE_DRIECTION_DOWN");
+                            ((ViewFlipper)(m_V_FLIPPER.getCurrentView().findViewById(R.id.VF_MFD))).setInAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.mfd_down_in));
+                            ((ViewFlipper)(m_V_FLIPPER.getCurrentView().findViewById(R.id.VF_MFD))).setOutAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.mfd_down_out));
+                            ((ViewFlipper) m_V_FLIPPER.getCurrentView().findViewById(R.id.VF_MFD)).showPrevious();
+                            return true;
+                        }
+                    }
+                }
+                return false;
+            }
+        });
+
     }
 
     @Override
@@ -122,112 +158,8 @@ public class DashBoardActivity extends Activity implements GestureDetector.OnGes
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+//        return super.onTouchEvent(event);
         return m_detector.onTouchEvent(event);
-    }
-
-    @Override
-    public boolean onDown(MotionEvent e) {
-        return false;
-    }
-
-    @Override
-    public void onShowPress(MotionEvent e) {
-
-    }
-
-    @Override
-    public boolean onSingleTapUp(MotionEvent e) {
-        return false;
-    }
-
-    @Override
-    public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-        return false;
-    }
-
-    @Override
-    public void onLongPress(MotionEvent e) {
-
-    }
-
-    @Override
-    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-        MyAnimationDrawable myAnimation = null;
-        if (Math.abs(e1.getY() - e2.getY()) > 250)
-            return false;
-        if (myAnimation != null)
-            if (myAnimation.isRunning() == true)
-                return false;
-        if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
-            this.m_swipe_direction = SWIPE_DIRECTION_LEFT;
-            Log.d(TAG, "SWIPE_DRIECTION_LEFT");
-        } else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
-            this.m_swipe_direction = SWIPE_DIRECTION_RIGHT;
-            Log.d(TAG, "SWIPE_DRIECTION_RIGHT");
-        } else {
-            if (e1.getY() - e2.getY() > SWIPE_MIN_DISTANCE && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
-                this.m_swipe_direction = SWIPE_DIRECTION_UP;
-                Log.d(TAG, "SWIPE_DRIECTION_UP");
-            } else if (e2.getY() - e1.getY() > SWIPE_MIN_DISTANCE && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
-                this.m_swipe_direction = SWIPE_DIRECTION_DOWN;
-                Log.d(TAG, "SWIPE_DRIECTION_DOWN");
-            } else
-                return false;
-            if (m_V_FLIPPER.getCurrentView().getId() == R.id.MFD1 || m_V_FLIPPER.getCurrentView().getId() == R.id.MFD2) {
-                ViewFlipper mfd_flipper = (ViewFlipper) m_V_FLIPPER.getCurrentView().findViewById(R.id.VF_MFD);
-                if (this.m_swipe_direction == SWIPE_DIRECTION_DOWN) {
-                    mfd_flipper.setInAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.mfd_down_in));
-                    mfd_flipper.setOutAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.mfd_down_out));
-                    mfd_flipper.showNext();
-                } else {
-                    mfd_flipper.setInAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.mfd_up_in));
-                    mfd_flipper.setOutAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.mfd_up_out));
-                    mfd_flipper.showPrevious();
-                }
-                return true;
-            }
-        }
-/*
-        if (m_V_FLIPPER.getCurrentView().getId() == R.id.TACHOMETER || m_V_FLIPPER.getCurrentView().getId() == R.id.SPEEDO)
-            myAnimation = new MyAnimationDrawable(
-                    (AnimationDrawable) ResourcesCompat.getDrawable(getResources(),
-                            m_swipe_direction == SWIPE_DIRECTION_LEFT ?
-                                    R.drawable.animation_coin_0_90 :
-                                    R.drawable.animation_coin_180_90, null));
-        else if (m_V_FLIPPER.getCurrentView().getId() == R.id.MFD1 || m_V_FLIPPER.getCurrentView().getId() == R.id.MFD2) {
-            myAnimation = new MyAnimationDrawable(
-                    (AnimationDrawable) ResourcesCompat.getDrawable(getResources(),
-                            m_swipe_direction == SWIPE_DIRECTION_LEFT ?
-                                    R.drawable.animation_coin_90_180 :
-                                    R.drawable.animation_coin_90_0, null));
-        } else
-            Log.e(TAG, "reference in dashboard is unknown!");
-        m_V_FLIPPER.setInAnimation(null);
-        m_V_FLIPPER.setBackgroundDrawable((Drawable) myAnimation);
-        myAnimation.setAnimationFinishListener(new MyAnimationDrawable.IAnimationFinishListener() {
-            @Override
-            public void onAnimationFinished() {
-                Log.d(TAG, "ANIMATION FINISHED!");
-                m_V_FLIPPER.setBackgroundDrawable(null);
-                if (DashBoardActivity.m_swipe_direction == SWIPE_DIRECTION_RIGHT)
-                    m_V_FLIPPER.showPrevious();
-                else
-                    m_V_FLIPPER.showNext();
-            }
-        });
-        m_V_FLIPPER.getCurrentView().setVisibility(View.INVISIBLE);
-        ((AnimationDrawable) m_V_FLIPPER.getBackground()).start();
-*/
-        if (this.m_swipe_direction == SWIPE_DIRECTION_LEFT) {
-            m_V_FLIPPER.setInAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.coin_fade_in));
-            m_V_FLIPPER.setOutAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.coin_fade_out));
-            m_V_FLIPPER.showNext();
-        } else {
-            m_V_FLIPPER.setInAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.coin_fade_in));
-            m_V_FLIPPER.setOutAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.coin_fade_out));
-            m_V_FLIPPER.showPrevious();
-        }
-        return true;
     }
 
     /**
