@@ -80,4 +80,23 @@
         <item name="android:singleLine">true</item>
     </style>
 
+    <style name="HistoryDateFont1" parent="@android:style/TextAppearance.Small">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:textSize">15dp</item>
+        <item name="android:layout_gravity">center_horizontal|center_vertical</item>
+        <item name="android:singleLine">true</item>
+    </style>
+
+    <style name="HistoryDateFont2" parent="@android:style/TextAppearance.Small">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:textSize">20dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_gravity">center_horizontal|center_vertical</item>
+        <item name="android:singleLine">true</item>
+    </style>
+
 </resources>

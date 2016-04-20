@@ -6,6 +6,7 @@
     <string name="TV_LABEL_TIME_TRAVEL">Czas jazdy</string>
     <string name="TV_LABEL_BATTERY_VOLTAGE">Napiecie ładowania</string>
     <string name="TV_LABEL_DAILY_ODOMETER">Dzienny licznik</string>
+    <string name="TV_LABEL_TOURS">Wycieczki</string>
     <string name="PREF_ALERT_VISIBLE">Ikona ostrzeżeń</string>
     <string name="PREF_BATTERY_MONITOR">Monitor stanu akumulatora</string>
     <string name="PREF_BATTERY_WARNING_VISIBLE">Ostrzeżenie o akumulatorze</string>

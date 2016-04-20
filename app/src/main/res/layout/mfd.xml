@@ -8,7 +8,7 @@
     android:paddingBottom="30sp"
     android:background="@drawable/coin_animation_090" >
 
-    <ViewFlipper
+    <w_pawel74.a03_xgate.MyViewFlipper
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:id="@+id/VF_MFD"
@@ -208,6 +208,37 @@
         </LinearLayout>
 
         <!-- *************************************************************
+                            TOURS LAYOUT
+         ************************************************************* -->
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:clickable="false"
+            android:id="@+id/LL_TOURS">
+
+            <TextView
+                style="@style/MfdLabelFont"
+                android:text="@string/TV_LABEL_TOURS"
+                android:id="@+id/TV_LABEL_TOURS" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:gravity="center" >
+
+                <ListView
+                    android:id="@+id/LV_TOURS"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"></ListView>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- *************************************************************
                                   SETTINGS LAYOUT
              ************************************************************* -->
 
@@ -239,6 +270,6 @@
 
         </LinearLayout>
 
-    </ViewFlipper>
+    </w_pawel74.a03_xgate.MyViewFlipper>
 
 </FrameLayout>

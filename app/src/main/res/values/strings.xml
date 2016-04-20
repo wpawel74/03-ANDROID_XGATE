@@ -5,6 +5,7 @@
     <string name="TV_LABEL_TEMPERATURE">Temperature [°C]</string>
     <string name="TV_LABEL_BATTERY_VOLTAGE">Battery Voltage</string>
     <string name="TV_LABEL_DAILY_ODOMETER">Daily odometer</string>
+    <string name="TV_LABEL_TOURS">Tours</string>
     <string name="PREF_XGATE_IP">Please enter xGate IP address</string>
     <string name="PREF_XGATE_PORT">xGate port</string>
     <string name="PREF_MFD_SETTINGS">Multi Function Display</string>
