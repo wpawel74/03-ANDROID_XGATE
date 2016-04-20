@@ -25,6 +25,8 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 import android.widget.ViewFlipper;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -42,11 +44,44 @@ public class DashBoardActivity extends Activity implements View.OnClickListener,
     private Activity m_activity = null;
     private PopupWindow m_popup = null;
     private View m_popupLayout = null;
+
+    class MySimpleAdapter extends SimpleAdapter {
+        /**
+         * Constructor
+         *
+         * @param context  The context where the View associated with this SimpleAdapter is running
+         * @param data     A List of Maps. Each entry in the List corresponds to one row in the list. The
+         *                 Maps contain the data for each row, and should include all the entries specified in
+         *                 "from"
+         * @param resource Resource identifier of a view layout that defines the views for this list
+         *                 item. The layout file should include at least those named views defined in "to"
+         * @param from     A list of column names that will be added to the Map associated with each
+         *                 item.
+         * @param to       The views that should display column in the "from" parameter. These should all be
+         *                 TextViews. The first N views in this list are given the values of the first N columns
+         */
+        public MySimpleAdapter(Context context, List<? extends Map<String, ?>> data, int resource, String[] from, int[] to) {
+            super(context, data, resource, from, to);
+        }
+
+        @Override
+        public boolean isEnabled(int position) {
+            return false;
+        }
+    }
+    private MySimpleAdapter m_simpleAdapter = null;
+
     private boolean m_ignition = false;
+    private int m_odometer = 0;
 
     private GestureDetector m_detector = null;
     private ViewFlipper m_V_FLIPPER = null;
-    private Tours m_history = null;
+
+    private Tours m_tours = null;
+
+    private int m_TourStartDistance = 0;
+    private long m_TourStartTime = 0;
+    private int m_TourID = -1;
 
     @Override
     public void onCreate(Bundle saveInstanceState) {
@@ -71,8 +106,17 @@ public class DashBoardActivity extends Activity implements View.OnClickListener,
                 ((Odometer) findViewById(R.id.ODOMETER)).setOdometer((new Random()).nextInt());
                 setTemperature((float) 34.5);
                 setIcon(Icon.ICON_BATTERY, true);
-                //if(getContext() instanceof Activity){ //typecast}
-                //showPopup( m_activity, R.string.POPUP_NETWORK_ISSUE, R.string.POPUP_XGATE_NOT_FOUND);
+
+                // store current tour ID
+                m_tours.add( new SimpleDateFormat( "MM.dd HH:mm" ).format( new Date(System.currentTimeMillis() )),
+                            TimeUtils.millisToShortDHMS(System.currentTimeMillis() - m_TourStartTime),
+                            Integer.toString(m_odometer - m_TourStartDistance),
+                            Integer.toString((int)((Speedo) findViewById(R.id.SPEEDO)).m_averageSpeed.getAverageValue()));
+
+                // start new tour
+                m_TourStartTime = System.currentTimeMillis();
+                m_TourStartDistance = m_odometer;
+                m_simpleAdapter.notifyDataSetChanged();
             }
         });
 
@@ -92,36 +136,14 @@ public class DashBoardActivity extends Activity implements View.OnClickListener,
         ((VoltGauge)m_LL_BATTERY_MFD1.findViewById(R.id.VOLT_MULTIMETER)).resetVoltAnim();
         ((VoltGauge)m_LL_BATTERY_MFD2.findViewById(R.id.VOLT_MULTIMETER)).resetVoltAnim();
 
-        m_history = new Tours();
-        m_history.load(this);
+        m_TourStartTime = System.currentTimeMillis();
 
-        class MySimpleAdapter extends SimpleAdapter {
-            /**
-             * Constructor
-             *
-             * @param context  The context where the View associated with this SimpleAdapter is running
-             * @param data     A List of Maps. Each entry in the List corresponds to one row in the list. The
-             *                 Maps contain the data for each row, and should include all the entries specified in
-             *                 "from"
-             * @param resource Resource identifier of a view layout that defines the views for this list
-             *                 item. The layout file should include at least those named views defined in "to"
-             * @param from     A list of column names that will be added to the Map associated with each
-             *                 item.
-             * @param to       The views that should display column in the "from" parameter. These should all be
-             *                 TextViews. The first N views in this list are given the values of the first N columns
-             */
-            public MySimpleAdapter(Context context, List<? extends Map<String, ?>> data, int resource, String[] from, int[] to) {
-                super(context, data, resource, from, to);
-            }
+        m_tours = new Tours();
+        m_tours.load(this);
 
-            @Override
-            public boolean isEnabled(int position) {
-                return false;
-            }
-        }
-        MySimpleAdapter simpleAdapter = new MySimpleAdapter(this, m_history.getList(), R.layout.history_item, m_history.from(), m_history.to() );
-        ((ListView)(findViewById(R.id.MFD1).findViewById(R.id.LV_TOURS))).setAdapter( simpleAdapter );
-        ((ListView)(findViewById(R.id.MFD2).findViewById(R.id.LV_TOURS))).setAdapter( simpleAdapter );
+        m_simpleAdapter = new MySimpleAdapter(this, m_tours.getList(), R.layout.tour_item, m_tours.from(), m_tours.to() );
+        ((ListView)(findViewById(R.id.MFD1).findViewById(R.id.LV_TOURS))).setAdapter( m_simpleAdapter );
+        ((ListView)(findViewById(R.id.MFD2).findViewById(R.id.LV_TOURS))).setAdapter( m_simpleAdapter );
 
 
         m_detector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
@@ -174,6 +196,14 @@ public class DashBoardActivity extends Activity implements View.OnClickListener,
         m_xGateProxy.cancel(true);
         m_xGateProxy.setXGateOnDataListener( null );
         m_xGateProxy = null;
+    }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+
+        // store tours
+        m_tours.store(this);
     }
 
     @Override
@@ -337,6 +367,7 @@ public class DashBoardActivity extends Activity implements View.OnClickListener,
         } else if ( words[0].startsWith("SPEED") ){
             ((Tacho) findViewById(R.id.SPEEDO)).showRpmWithAnimation(Integer.valueOf(words[1]));
         } else if( words[0].startsWith("ODOMETER") ){
+            m_odometer = Integer.valueOf(words[1]);
             ((Odometer) findViewById(R.id.ODOMETER)).setOdometer(Integer.valueOf(words[1]));
         } else if( words[0].startsWith("DAILY_ODOMETER") ){
             setDailyOdometer(Integer.valueOf(words[1]));
@@ -364,6 +395,20 @@ public class DashBoardActivity extends Activity implements View.OnClickListener,
             }
             m_ignition = Integer.valueOf(words[1]) == 1 ? true: false;
             setIcon(Icon.ICON_ENGINE, !m_ignition ? true : false);
+        } else if( words[0].startsWith("IGNITION_COUNTER") ){
+            if( m_TourID != Integer.valueOf(words[1]) ){
+                // store current tour ID
+                m_tours.add( new SimpleDateFormat( "MM.dd HH:mm" ).format( new Date(System.currentTimeMillis() )),
+                            TimeUtils.millisToLongDHMS(System.currentTimeMillis() - m_TourStartTime),
+                            Integer.toString(m_odometer - m_TourStartDistance),
+                            Integer.toString((int)((Speedo) findViewById(R.id.SPEEDO)).m_averageSpeed.getAverageValue()));
+
+                // start new tour
+                m_TourStartTime = System.currentTimeMillis();
+                m_TourStartDistance = m_odometer;
+                m_TourID = Integer.valueOf(words[1]);
+                m_simpleAdapter.notifyDataSetChanged();
+            }
         }
     }
 

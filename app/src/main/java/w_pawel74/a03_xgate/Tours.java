@@ -3,24 +3,21 @@ package w_pawel74.a03_xgate;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Created by wisniewskip on 2016-04-18.
  */
 public class Tours {
 
-    private final static int MAX_HISTORY_ITEMS = 5;
+    private final static int MAX_HISTORY_ITEMS = 4;
 
     private ArrayList<Map<String, String>> m_list = new ArrayList<Map<String, String>>();
 
@@ -42,7 +39,7 @@ public class Tours {
      */
     public void add( String date, String duration, String speed, String distance ){
         if( m_list.size() >= MAX_HISTORY_ITEMS )
-            delLastItem();
+            delFirstItem();
         m_list.add( putData( date, duration, speed, distance ));
     }
 
@@ -68,10 +65,11 @@ public class Tours {
     }
 
     /**
-     * delete last item from list
+     * delete first item from list
      */
-    public void delLastItem(){
-        m_list.remove(m_list.size());
+    public void  delFirstItem(){
+        if( m_list.size() > 0 )
+            m_list.remove(0);
     }
     /**
      * used for store history in preferences
@@ -107,7 +105,7 @@ public class Tours {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         try {
             JSONArray arr = new JSONArray(prefs.getString("history", "{}"));
-            for( int it = 0; it < arr.length(); it++ ){
+            for( int it = 0; it < arr.length() && it < MAX_HISTORY_ITEMS; it++ ){
                 JSONObject obj = arr.optJSONObject(it);
                 HashMap<String, String> map = new HashMap<String, String>();
                 map.put( "date", obj.getString("date"));
