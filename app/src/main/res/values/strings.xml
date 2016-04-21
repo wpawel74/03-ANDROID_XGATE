@@ -25,6 +25,8 @@
     <string name="PREF_ALERT_VISIBLE">Alert Icon</string>
     <string name="PREF_ONOFF">On/Off</string>
     <string name="PREF_BATTERY_MONITOR">Battery Monitor</string>
+    <string name="PREF_TOUR_STORE_MIN_DISTANCE">Save tour if distance is bigger than ...</string>
+    <string name="PREF_TOUR_STORE_MIN_TIME">Save tour if time more than ...</string>
     <string name="POPUP_INFO_IGNITION_ON">Ignition is ON</string>
     <string name="POPUP_INFO_IGNITION_OFF">Ignition is OFF</string>
     <string name="POPUP_INFO">System Information</string>

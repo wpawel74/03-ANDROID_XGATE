@@ -30,6 +30,22 @@
             android:summary="@string/PREF_ONOFF"
             android:title="@string/PREF_BATTERY_MONITOR" />
 
+        <ListPreference
+            android:key="LL_TOUR_STORE_MIN_DISTANCE"
+            android:title="@string/PREF_TOUR_STORE_MIN_DISTANCE"
+            android:dialogTitle="@string/PREF_TOUR_STORE_MIN_DISTANCE"
+            android:entries="@array/TOUR_STORE_DISTANCE_ENTRIES"
+            android:entryValues="@array/TOUR_STORE_DISTANCE_VALUES"
+            android:defaultValue="0" />
+
+        <ListPreference
+            android:key="LL_TOUR_STORE_MIN_TIME"
+            android:title="@string/PREF_TOUR_STORE_MIN_TIME"
+            android:dialogTitle="@string/PREF_TOUR_STORE_MIN_TIME"
+            android:entries="@array/TOUR_STORE_TIME_ENTRIES"
+            android:entryValues="@array/TOUR_STORE_TIME_VALUES"
+            android:defaultValue="0" />
+
     </PreferenceCategory>
 
     <!-- dashboard icons configuration -->

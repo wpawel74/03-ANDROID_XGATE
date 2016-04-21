@@ -26,6 +26,8 @@
     <string name="PREF_XGATE_PORT">Użyty port</string>
     <string name="PREF_XGATE_SETTINGS">Ustawienia xGate</string>
     <string name="PREF_XGATE_SETTINGS_SUMMARY">Podstawowe ustawienia dla xGate</string>
+    <string name="PREF_TOUR_STORE_MIN_DISTANCE">Zapisz jeżeli stan kilometrów jest wiekszy niż</string>
+    <string name="PREF_TOUR_STORE_MIN_TIME">Zapisz jeżeli czas jazdy jest wiekszy niż</string>
     <string name="POPUP_INFO_IGNITION_OFF">Stacyjka wyłączona</string>
     <string name="POPUP_INFO_IGNITION_ON">Stacyjka włączona</string>
     <string name="POPUP_INFO">Informacja z systemu</string>
