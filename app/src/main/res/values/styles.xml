@@ -34,7 +34,7 @@
         <item name="android:singleLine">true</item>
     </style>
 
-    <style name="TimeTravelFont_HHMM" parent="@android:style/TextAppearance.Large">
+    <style name="TravelTimeFont_HHMM" parent="@android:style/TextAppearance.Large">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">40sp</item>
@@ -45,7 +45,7 @@
         <item name="android:singleLine">true</item>
     </style>
 
-    <style name="TimeTravelFont_SS" parent="@android:style/TextAppearance.Small">
+    <style name="TravelTimeFont_SS" parent="@android:style/TextAppearance.Small">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">27sp</item>
@@ -80,7 +80,7 @@
         <item name="android:singleLine">true</item>
     </style>
 
-    <style name="HistoryDateFont1" parent="@android:style/TextAppearance.Small">
+    <style name="TourDateFont1" parent="@android:style/TextAppearance.Small">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">#ffffff</item>
@@ -89,7 +89,7 @@
         <item name="android:singleLine">true</item>
     </style>
 
-    <style name="HistoryDateFont2" parent="@android:style/TextAppearance.Small">
+    <style name="TourDateFont2" parent="@android:style/TextAppearance.Small">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">#ffffff</item>

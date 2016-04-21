@@ -177,12 +177,12 @@
             android:orientation="vertical"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:id="@+id/LL_TIME_TRAVEL">
+            android:id="@+id/LL_TRAVEL_TIME">
 
             <TextView
                 style="@style/MfdLabelFont"
                 android:text="@string/TV_LABEL_TIME_TRAVEL"
-                android:id="@+id/TV_LABEL_TIME_TRAVEL" />
+                android:id="@+id/TV_LABEL_TRAVEL_TIME" />
 
             <LinearLayout
                 android:orientation="horizontal"
@@ -191,17 +191,17 @@
                 android:gravity="center" >
 
                 <TextView
-                        style="@style/TimeTravelFont_HHMM"
+                        style="@style/TravelTimeFont_HHMM"
                         android:layout_gravity="center"
                         android:text="10:34"
-                        android:id="@+id/TV_TIME_TRAVEL_HHMM" />
+                        android:id="@+id/TV_TRAVEL_TIME_HHMM" />
 
                 <TextView
-                        style="@style/TimeTravelFont_SS"
+                        style="@style/TravelTimeFont_SS"
                         android:layout_gravity="center"
                         android:text="22"
                         android:paddingLeft="7px"
-                        android:id="@+id/TV_TIME_TRAVEL_SS" />
+                        android:id="@+id/TV_TRAVEL_TIME_SS" />
 
             </LinearLayout>
 
