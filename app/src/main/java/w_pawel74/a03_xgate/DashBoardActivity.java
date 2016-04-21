@@ -124,13 +124,12 @@ public class DashBoardActivity extends Activity implements View.OnClickListener,
         // connect to onClick for B_SETTINGS buttons (MFD1 MFD2)
         ((Button)(findViewById(R.id.MFD1).findViewById(R.id.B_SETTINGS))).setOnClickListener(this);
         ((Button)(findViewById(R.id.MFD2).findViewById(R.id.B_SETTINGS))).setOnClickListener(this);
+
+        // load animation for 'main' viewflipper
         m_V_FLIPPER.setInAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.coin_fade_in));
         m_V_FLIPPER.setOutAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.coin_fade_out));
-        ((ViewFlipper)(findViewById(R.id.MFD1)).findViewById(R.id.VF_MFD)).setInAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.mfd_down_in));
-        ((ViewFlipper)(findViewById(R.id.MFD1)).findViewById(R.id.VF_MFD)).setOutAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.mfd_down_out));
-        ((ViewFlipper)(findViewById(R.id.MFD2)).findViewById(R.id.VF_MFD)).setInAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.mfd_down_in));
-        ((ViewFlipper)(findViewById(R.id.MFD2)).findViewById(R.id.VF_MFD)).setOutAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.mfd_down_out));
 
+        // reset dashboard instruments
         ((Speedo) findViewById(R.id.SPEEDO)).resetSpeedAnim();
         ((Speedo) findViewById(R.id.SPEEDO)).m_averageSpeed.reset();
         ((Tacho) findViewById(R.id.TACHOMETER)).resetRpmAnim();
@@ -234,7 +233,6 @@ public class DashBoardActivity extends Activity implements View.OnClickListener,
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-//        return super.onTouchEvent(event);
         return m_detector.onTouchEvent(event);
     }
 
