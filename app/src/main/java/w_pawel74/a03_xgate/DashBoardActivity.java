@@ -70,6 +70,7 @@ public class DashBoardActivity extends Activity implements View.OnClickListener,
         }
     }
     private MySimpleAdapter m_simpleAdapter = null;
+    private Handler m_Handler = null;
 
     private boolean m_ignition = false;
     private int m_odometer = 0;
@@ -101,16 +102,16 @@ public class DashBoardActivity extends Activity implements View.OnClickListener,
         ((Button) findViewById(R.id.button)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((Speedo) findViewById(R.id.SPEEDO)).showSpeedWithAnimation((new Random()).nextInt() % 130);
-                ((Tacho) findViewById(R.id.TACHOMETER)).showRpmWithAnimation((new Random()).nextInt() % 13000);
-                ((Odometer) findViewById(R.id.ODOMETER)).setOdometer((new Random()).nextInt());
+                ((Speedo) findViewById(R.id.SPEEDO)).showSpeedWithAnimation( Math.abs( (new Random()).nextInt() % 130) );
+                ((Tacho) findViewById(R.id.TACHOMETER)).showRpmWithAnimation( Math.abs( (new Random()).nextInt() % 13000) );
+                ((Odometer) findViewById(R.id.ODOMETER)).setOdometer( Math.abs( (new Random()).nextInt() ) );
                 setTemperature((float) 34.5);
                 setIcon(Icon.ICON_BATTERY, true);
 
                 // store current tour ID
                 m_tours.add( new SimpleDateFormat( "MM.dd HH:mm" ).format( new Date(System.currentTimeMillis() )),
                             TimeUtils.millisToShortDHMS(System.currentTimeMillis() - m_TourStartTime),
-                            Integer.toString(m_odometer - m_TourStartDistance),
+                            Integer.toString( odo2km(m_odometer - m_TourStartDistance) ),
                             Integer.toString((int)((Speedo) findViewById(R.id.SPEEDO)).m_averageSpeed.getAverageValue()));
 
                 // start new tour
@@ -151,23 +152,23 @@ public class DashBoardActivity extends Activity implements View.OnClickListener,
             public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
 
                 if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
-                    Log.d(TAG, "SWIPE_DRIECTION_LEFT");
+                    Log.d(TAG, "SWIPE_DIR_LEFT");
                     m_V_FLIPPER.showNext();
                     return true;
                 } else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
-                    Log.d(TAG, "SWIPE_DRIECTION_RIGHT");
+                    Log.d(TAG, "SWIPE_DIR_RIGHT");
                     m_V_FLIPPER.showPrevious();
                     return true;
                 } else {
                     if (m_V_FLIPPER.getCurrentView().getId() == R.id.MFD1 || m_V_FLIPPER.getCurrentView().getId() == R.id.MFD2) {
                         if (e1.getY() - e2.getY() > SWIPE_MIN_DISTANCE && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
-                            Log.d(TAG, "SWIPE_DRIECTION_UP");
+                            Log.d(TAG, "SWIPE_DIR_UP");
                             ((ViewFlipper)(m_V_FLIPPER.getCurrentView().findViewById(R.id.VF_MFD))).setInAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.mfd_up_in));
                             ((ViewFlipper)(m_V_FLIPPER.getCurrentView().findViewById(R.id.VF_MFD))).setOutAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.mfd_up_out));
                             ((ViewFlipper) m_V_FLIPPER.getCurrentView().findViewById(R.id.VF_MFD)).showNext();
                             return true;
                         } else if (e2.getY() - e1.getY() > SWIPE_MIN_DISTANCE && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
-                            Log.d(TAG, "SWIPE_DRIECTION_DOWN");
+                            Log.d(TAG, "SWIPE_DIR_DOWN");
                             ((ViewFlipper)(m_V_FLIPPER.getCurrentView().findViewById(R.id.VF_MFD))).setInAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.mfd_down_in));
                             ((ViewFlipper)(m_V_FLIPPER.getCurrentView().findViewById(R.id.VF_MFD))).setOutAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.mfd_down_out));
                             ((ViewFlipper) m_V_FLIPPER.getCurrentView().findViewById(R.id.VF_MFD)).showPrevious();
@@ -179,6 +180,18 @@ public class DashBoardActivity extends Activity implements View.OnClickListener,
             }
         });
 
+        /**
+         * refresh Travel Time
+         */
+        m_Handler = new Handler();
+        m_Handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                long duration = System.currentTimeMillis() - m_TourStartTime;
+                setTravelTime( TimeUtils.millisToShortDHM( duration ), String.format("%02d", (int)((duration / 1000) % 60) ) );
+                m_Handler.postDelayed(this, 1000);
+            }
+        }, 1000);
     }
 
     @Override
@@ -320,7 +333,7 @@ public class DashBoardActivity extends Activity implements View.OnClickListener,
     }
 
     /**
-     * configuration for dashboard views
+     * Enable/Disable some elements on dashboard view depends from custom configuration.
      */
     private void dashBoardViewConfiguration() {
         // widget custom configuration
@@ -397,11 +410,13 @@ public class DashBoardActivity extends Activity implements View.OnClickListener,
             setIcon(Icon.ICON_ENGINE, !m_ignition ? true : false);
         } else if( words[0].startsWith("IGNITION_COUNTER") ){
             if( m_TourID != Integer.valueOf(words[1]) ){
-                // store current tour ID
-                m_tours.add( new SimpleDateFormat( "MM.dd HH:mm" ).format( new Date(System.currentTimeMillis() )),
+                if( tourShouldByStored() ) {
+                    // store current tour ID
+                    m_tours.add(new SimpleDateFormat("MM.dd HH:mm").format(new Date(System.currentTimeMillis())),
                             TimeUtils.millisToLongDHMS(System.currentTimeMillis() - m_TourStartTime),
-                            Integer.toString(m_odometer - m_TourStartDistance),
-                            Integer.toString((int)((Speedo) findViewById(R.id.SPEEDO)).m_averageSpeed.getAverageValue()));
+                            Integer.toString( odo2km(m_odometer - m_TourStartDistance) ),
+                            Integer.toString((int) ((Speedo) findViewById(R.id.SPEEDO)).m_averageSpeed.getAverageValue()));
+                }
 
                 // start new tour
                 m_TourStartTime = System.currentTimeMillis();
@@ -457,7 +472,7 @@ public class DashBoardActivity extends Activity implements View.OnClickListener,
     }
 
     /**
-     * set temperature in celcius on widget
+     * set temperature in celcius on widget (on both side of coin)
      * @param temperature     temperature in celcius
      */
     public void setTemperature( float temperature ) {
@@ -466,7 +481,7 @@ public class DashBoardActivity extends Activity implements View.OnClickListener,
     }
 
     /**
-     * set voltage on guage
+     * set voltage on guage (on both side of coin)
      * @param voltage           voltage in milivolts unit, eg value 1000 mean 1V
      */
     public void setVoltage( int voltage ) {
@@ -474,6 +489,10 @@ public class DashBoardActivity extends Activity implements View.OnClickListener,
         ((VoltGauge)m_LL_BATTERY_MFD2.findViewById(R.id.VOLT_MULTIMETER)).showVoltageWithAnimation(voltage);
     }
 
+    /**
+     * set daily odometer (on both side of coin)
+     * @param odometer          daily odometer value
+     */
     public void setDailyOdometer( int odometer ) {
         if( findViewById(R.id.MFD1).findViewById(R.id.LV_DAILY_ODOMETER) != null )
             ((Odometer)findViewById(R.id.MFD1).findViewById(R.id.LV_DAILY_ODOMETER)).setOdometer(odometer);
@@ -481,4 +500,39 @@ public class DashBoardActivity extends Activity implements View.OnClickListener,
             ((Odometer)findViewById(R.id.MFD2).findViewById(R.id.LV_DAILY_ODOMETER)).setOdometer(odometer);
     }
 
+    /**
+     * set travel time (on both side of coin)
+     * @param hhMM              hours and minutes
+     * @param ss                seconds
+     */
+    public void setTravelTime( String hhMM, String ss ) {
+        ((TextView) findViewById(R.id.MFD1).findViewById(R.id.TV_TRAVEL_TIME_HHMM)).setText(hhMM);
+        ((TextView) findViewById(R.id.MFD1).findViewById(R.id.TV_TRAVEL_TIME_SS)).setText(ss);
+        ((TextView) findViewById(R.id.MFD2).findViewById(R.id.TV_TRAVEL_TIME_HHMM)).setText(hhMM);
+        ((TextView) findViewById(R.id.MFD2).findViewById(R.id.TV_TRAVEL_TIME_SS)).setText(ss);
+    }
+
+    /**
+     * convert odometer independed unit to kilometers
+     * @param odometer          - odometer value
+     * @return                  - in kilometers
+     */
+    public int odo2km( int odometer ){
+        // TODO: implementation is missing!
+        return odometer;
+    }
+
+    /**
+     * check conditions current tour should be stored or doesn't
+     * @return
+     */
+    public boolean tourShouldByStored(){
+        String minDistance = PreferenceManager.getDefaultSharedPreferences(this).getString("LL_TOUR_STORE_MIN_DISTANCE", "1");
+        String minTime = PreferenceManager.getDefaultSharedPreferences(this).getString("LL_TOUR_STORE_MIN_TIME", "10");
+
+        if ( (((System.currentTimeMillis() - m_TourStartTime)/1000) > (Integer.getInteger(minTime) * 60) || Integer.getInteger(minTime) == 9)&&
+                (Integer.getInteger(minDistance) > odo2km((m_odometer - m_TourStartDistance)) || Integer.getInteger(minDistance) == 0) )
+            return true;
+        return false;
+    }
 }
