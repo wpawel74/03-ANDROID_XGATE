@@ -82,4 +82,25 @@ public class TimeUtils {
         }
         return res;
     }
+
+    /**
+     * converts time (in milliseconds) to human-readable format
+     * "<dd:>hh:mm:ss"
+     */
+    public static String millisToShortDHM(long duration) {
+        String res = "";
+        duration /= ONE_SECOND;
+        duration /= SECONDS;
+        int minutes = (int) (duration % MINUTES);
+        duration /= MINUTES;
+        int hours = (int) (duration % HOURS);
+        int days = (int) (duration / HOURS);
+        if (days == 0) {
+            res = String.format("%02d:%02d", hours, minutes);
+        } else {
+            res = String.format("%dd%02d:%02d", days, hours, minutes);
+        }
+        return res;
+    }
+
 }
